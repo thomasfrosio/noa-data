@@ -1,4 +1,5 @@
-# Generate data for noa/tests/cpu/fourier/TestResize.h
+# This is deprecated. NOA is not using these anymore.
+
 import os
 import numpy as np
 import mrcfile
@@ -25,8 +26,8 @@ def generate_crop():
     after = np.zeros((y, x), dtype=np.float32)
     after[0:y // 2, :] = before[0:y // 2, 0:x]
     after[y // 2::, :] = before[y // 2 + yold - y::, 0:x]
-    save_mrc("./crop_2D_before.mrc", before)
-    save_mrc("./crop_2D_after.mrc", after)
+    save_mrc("./tmp_crop_2D_before.mrc", before)
+    save_mrc("./tmp_crop_2D_after.mrc", after)
 
     # 3D:
     zold, yold, xold = get_random_large(), get_random_large(), get_random_large()
@@ -37,8 +38,8 @@ def generate_crop():
     after[0:z // 2, y // 2::, :] = before[0:z // 2, y // 2 + yold - y::, 0:x]
     after[z // 2::, 0:y // 2, :] = before[z // 2 + zold - z::, 0:y // 2, 0:x]
     after[z // 2::, y // 2::, :] = before[z // 2 + zold - z::, y // 2 + yold - y::, 0:x]
-    save_mrc("./crop_3D_before.mrc", before)
-    save_mrc("./crop_3D_after.mrc", after)
+    save_mrc("./tmp_crop_3D_before.mrc", before)
+    save_mrc("./tmp_crop_3D_after.mrc", after)
 
 
 def generate_crop_full():
@@ -51,8 +52,8 @@ def generate_crop_full():
     after[0:y // 2, x // 2::] = before[0:y // 2, x // 2 + xold - x::]
     after[y // 2::, 0:x // 2] = before[y // 2 + yold - y::, 0:x // 2]
     after[y // 2::, x // 2::] = before[y // 2 + yold - y::, x // 2 + xold - x::]
-    save_mrc("./crop_full_2D_before.mrc", before)
-    save_mrc("./crop_full_2D_after.mrc", after)
+    save_mrc("./tmp_crop_full_2D_before.mrc", before)
+    save_mrc("./tmp_crop_full_2D_after.mrc", after)
 
     # 3D: 11x10x9 to 8x8x8 logical size
     zold, yold, xold = get_random_large(), get_random_large(), get_random_large()
@@ -67,8 +68,8 @@ def generate_crop_full():
     after[z // 2::, 0:y // 2, x // 2::] = before[z // 2 + zold - z::, 0:y // 2, x // 2 + xold - x::]
     after[z // 2::, y // 2::, 0:x // 2] = before[z // 2 + zold - z::, y // 2 + yold - y::, 0:x // 2]
     after[z // 2::, y // 2::, x // 2::] = before[z // 2 + zold - z::, y // 2 + yold - y::, x // 2 + xold - x::]
-    save_mrc("./crop_full_3D_before.mrc", before)
-    save_mrc("./crop_full_3D_after.mrc", after)
+    save_mrc("./tmp_crop_full_3D_before.mrc", before)
+    save_mrc("./tmp_crop_full_3D_after.mrc", after)
 
 
 def generate_pad():
@@ -83,8 +84,8 @@ def generate_pad():
 
     after[0:yhalf, 0:xold] = before[0:yhalf, :]
     after[yoffset + yhalf::, 0:xold] = before[yhalf::, :]
-    save_mrc("./pad_2D_before.mrc", before)
-    save_mrc("./pad_2D_after.mrc", after)
+    save_mrc("./tmp_pad_2D_before.mrc", before)
+    save_mrc("./tmp_pad_2D_after.mrc", after)
 
     # 3D:
     zold, yold, xold = get_random_large(), get_random_large(), get_random_large()
@@ -99,8 +100,8 @@ def generate_pad():
     after[0:zhalf, yoffset + yhalf::, 0:xold] = before[0:zhalf, yhalf::, :]
     after[zoffset + zhalf::, 0:yhalf, 0:xold] = before[zhalf::, 0:yhalf, :]
     after[zoffset + zhalf::, yoffset + yhalf::, 0:xold] = before[zhalf::, yhalf::, :]
-    save_mrc("./pad_3D_before.mrc", before)
-    save_mrc("./pad_3D_after.mrc", after)
+    save_mrc("./tmp_pad_3D_before.mrc", before)
+    save_mrc("./tmp_pad_3D_after.mrc", after)
 
 
 def generate_pad_full():
@@ -117,8 +118,8 @@ def generate_pad_full():
     after[0:yhalf, xoffset + xhalf::] = before[0:yhalf, xhalf::]
     after[yoffset + yhalf::, 0:xhalf] = before[yhalf::, 0:xhalf]
     after[yoffset + yhalf::, xoffset + xhalf::] = before[yhalf::, xhalf::]
-    save_mrc("./pad_full_2D_before.mrc", before)
-    save_mrc("./pad_full_2D_after.mrc", after)
+    save_mrc("./tmp_pad_full_2D_before.mrc", before)
+    save_mrc("./tmp_pad_full_2D_after.mrc", after)
 
     # 3D:
     zold, yold, xold = get_random_large(), get_random_large(), get_random_large()
@@ -137,8 +138,8 @@ def generate_pad_full():
     after[zoffset + zhalf::, 0:yhalf, xoffset + xhalf::] = before[zhalf::, 0:yhalf, xhalf::]
     after[zoffset + zhalf::, yoffset + yhalf::, 0:xhalf] = before[zhalf::, yhalf::, 0:xhalf]
     after[zoffset + zhalf::, yoffset + yhalf::, xoffset + xhalf::] = before[zhalf::, yhalf::, xhalf::]
-    save_mrc("./pad_full_3D_before.mrc", before)
-    save_mrc("./pad_full_3D_after.mrc", after)
+    save_mrc("./tmp_pad_full_3D_before.mrc", before)
+    save_mrc("./tmp_pad_full_3D_after.mrc", after)
 
 
 if __name__ == '__main__':
