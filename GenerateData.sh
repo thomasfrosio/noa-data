@@ -4,7 +4,6 @@
 
 # Before running the tests, run this script once.
 # This will generate the test data needed by noa. All data files will be overwritten.
-# Then, it sets the NOA_TEST_DATA environmental variable used by noa.
 
 # Some colours in your life
 GREEN='\033[0;32m'
@@ -29,4 +28,3 @@ NOA_TEST_DATA="$(
 )" # https://stackoverflow.com/questions/4774054
 
 echo -e "${GREEN}noa-tests: remember to export NOA_TEST_DATA to \"${NOA_TEST_DATA}\"${NC}"
-
