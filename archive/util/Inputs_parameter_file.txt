@@ -12,7 +12,7 @@ noa_option4= file with space.txt    #this is an inline comment, this is accepted
 noa_option6=4546,2345,234
     noa_option7 = YES
     noa_opt8=my_input_file[1.2].mrc
-   noa_opt9=1.4e-10 # e/A2
+   noa_opt9=1.4e-10,0.5 # e/A2
 noa_opt10       =   -123,-123,-12 # =comment
 noa_option11 = string with = in it should be ok
 noa_option12    =one can also pass an entire sentence, with commas and whatnot..

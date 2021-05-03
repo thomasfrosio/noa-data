@@ -12,7 +12,7 @@ _AKoption4= file with space.txt    #this is an inline comment, this is accepted.
 _AKoption6=4546,2345,234
     _AKoption7 = YES
     _AKopt8=my_input_file[1.2].mrc
-   _AKopt9=1.4e-10 # e/A2
+   _AKopt9=1.4e-10, 0.5 # e/A2
 _AKopt10       =   -123,-123,-12 # =comment
 _AKoption11 = string with = in it should be ok
 _AKoption12    =one can also pass an entire sentence, with commas and whatnot..
