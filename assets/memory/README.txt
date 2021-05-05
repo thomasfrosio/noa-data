@@ -21,3 +21,6 @@ resize_15: ishape:{80,1,1}, oshape:{80,80,40}, mode:CLAMP, value:0 batch:1
 resize_16: ishape:{1,50,50}, oshape:{20,31,5}, mode:CLAMP, value:0 batch:1
 resize_17: ishape:{30,30,30}, oshape:{90,90,90}, mode:PERIODIC, value:0 batch:1
 resize_18: ishape:{64,128,32}, oshape:{128,256,32}, mode:MIRROR, value:0 batch:1
+
+resize_19: ishape:{64,64,1}, oshape:{81,59,1}, bleft:{11,-5,0}, bright:{6,0,0}, mode:NOTHING, value:0 batch:3
+resize_20: ishape:{127,128,1}, oshape:{68,128,5}, bleft:{-50,100,4}, bright:{-9,-100,0}, mode:NOTHING, value:0 batch:1
