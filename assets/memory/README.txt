@@ -24,3 +24,15 @@ resize_18: ishape:{64,128,32}, oshape:{128,256,32}, mode:MIRROR, value:0 batch:1
 
 resize_19: ishape:{64,64,1}, oshape:{81,59,1}, bleft:{11,-5,0}, bright:{6,0,0}, mode:NOTHING, value:0 batch:3
 resize_20: ishape:{127,128,1}, oshape:{68,128,5}, bleft:{-50,100,4}, bright:{-9,-100,0}, mode:NOTHING, value:0 batch:1
+
+Noa::Memory::extract(), insert()
+================================
+
+extract_10, extract_11, extract_12, extract_13, extract_14, insert_1:
+ishape:{512,513,1}, subshape:{62,63,1}, subcenters:{30,31,0},{500,500,0},{128,32,0},{350,451,0},{512,0,0}, subcount:5, mode:VALUE, value:3.5
+
+extract_20, extract_21, extract_22, insert_2:
+ishape:{256,255,50}, subshape:{55,60,1}, subcenters:{0,0,0},{128,32,24},{0,255,0}, subcount:3, mode:NOTHING, value:3
+
+extract_30, extract_31, extract_32, insert_3:
+ishape:{128,127,126}, subshape:{40,42,43}, subcenters:{30,31,20},{127,126,125},{64,117,120}, subcount:3, mode:ZERO, value:5
