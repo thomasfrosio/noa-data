@@ -10,8 +10,8 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-# This script should generates all data. Should be withing python3.8 with numpy and mrcfile.
-for package in numpy mrcfile; do
+# This script should generates all data. Should be >= python3.
+for package in numpy mrcfile scipy; do
   python -c "import ${package}" >/dev/null 2>&1 || {
     echo -e "${RED}noa-tests: please add \"${package}\" to the current python environment${NC}"
     exit 1
@@ -28,3 +28,4 @@ NOA_TEST_DATA="$(
 )" # https://stackoverflow.com/questions/4774054
 
 echo -e "${GREEN}noa-tests: remember to export NOA_TEST_DATA to \"${NOA_TEST_DATA}\"${NC}"
+
