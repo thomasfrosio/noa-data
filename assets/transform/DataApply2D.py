@@ -114,7 +114,7 @@ if __name__ == '__main__':
             out = ndimage.affine_transform(image2D, np.linalg.inv(matrix), order=order, mode=mode, cval=value)
             save_mrc("tmp_apply2D_test{:02}.mrc".format(count), out)
 
-            # For noa, positive angle is CCW looking at the center, (x,y)
+            # For noa, positive angle is CCW looking at the center and (x,y) order.
             matrix = (matrix_translate(5.5, -25.5) @
                       matrix_translate(center, center) @
                       matrix_rotate(35.5) @
@@ -122,4 +122,3 @@ if __name__ == '__main__':
                       matrix_translate(-center, -center))
             save_mrc("tmp_apply2D_test{:02}_matrix33.mrc".format(count), matrix)
             count += 1
-
