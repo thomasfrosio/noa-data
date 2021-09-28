@@ -19,7 +19,7 @@ for package in numpy mrcfile scipy; do
 done
 
 echo -e "${GREEN}noa-tests: generating data - start${NC}"
-find archive -type f -name "Data*.py" -exec echo "noa-tests: running" {} \; -exec python {} \;
+find assets -type f -name "Data*.py" -exec echo "noa-tests: running" {} \; -exec python {} \;
 echo -e "${GREEN}noa-tests: generating data - done${NC}"
 
 NOA_TEST_DATA="$(
