@@ -2,7 +2,7 @@ Test data for ffyr2w/noa
 This is meant to be an artefact repository.
 
 Usage:
-    - Clone this repository:
+    - Clone this repository, e.g.:
       >> git clone --depth=1 https://github.com/ffyr2w/noa-data.git
       The path of the noa-data repository is referred to as: <noa-data>
     - Run this script to generate the test data:

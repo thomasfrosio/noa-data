@@ -1,49 +1,40 @@
-import os
 import numpy as np
-import mrcfile
+from assets import util
 
 
-def save_mrc(filename, data):
-    with mrcfile.new(filename, overwrite=True) as mrc:
-        mrc.set_data(data)
+def generate_inputs(param):
+    # Values starts at 0, up to N, contiguously.
+    for entry in param:
+        shape = entry['shape']
+        array = np.arange(np.prod(shape), dtype=np.float32).reshape(np.flip(shape))
+        util.save_mrc(entry['path'], array)
+    print("\t-- Generated: inputs")
+
+
+def generate_expected(param):
+    # Load input, transpose and save.
+    for i in param:
+        array = util.load_mrc(param[i]['input'])
+
+        # C++: x=0, y=1, z=2; Numpy: x=2, y=1, z=0
+        cpp_permutation = np.flip(param[i]['permutation'])
+        numpy_permutation = np.zeros(3, dtype=int)
+        for dim in range(3):
+            if cpp_permutation[dim] == 0:
+                numpy_permutation[dim] = 2
+            elif cpp_permutation[dim] == 2:
+                numpy_permutation[dim] = 0
+            else:
+                numpy_permutation[dim] = 1
+
+        transposed = np.transpose(array, numpy_permutation)
+        util.save_mrc(param[i]['expected'], transposed)
+    print("\t-- Generated: expected")
 
 
 if __name__ == '__main__':
-    os.chdir(os.path.abspath(os.path.dirname(__file__)))
+    util.set_cwd(__file__)
 
-    data_2d = np.arange(15000, dtype=np.float32).reshape((1, 120, 125))
-    data_3d = np.arange(1815000, dtype=np.float32).reshape((121, 120, 125))
-    save_mrc("tmp_transpose_data_2d.mrc", data_2d)
-    save_mrc("tmp_transpose_data_3d.mrc", data_3d)
-
-    save_mrc("tmp_transpose_2d_102.mrc", np.transpose(data_2d, (0, 2, 1)))
-    save_mrc("tmp_transpose_3d_021.mrc", np.transpose(data_3d, (1, 0, 2)))
-    save_mrc("tmp_transpose_3d_102.mrc", np.transpose(data_3d, (0, 2, 1)))
-    save_mrc("tmp_transpose_3d_120.mrc", np.transpose(data_3d, (2, 0, 1)))
-    save_mrc("tmp_transpose_3d_201.mrc", np.transpose(data_3d, (1, 2, 0)))
-    save_mrc("tmp_transpose_3d_210.mrc", np.transpose(data_3d, (2, 1, 0)))
-
-    # in place
-    shape = (1, 64, 64)
-    elements = np.prod(shape)
-    data_2d = np.arange(elements, dtype=np.float32).reshape(shape)
-    save_mrc("tmp_transpose_2d_in_place_102_data.mrc", data_2d)
-    save_mrc("tmp_transpose_2d_in_place_102_expected.mrc", np.transpose(data_2d, (0, 2, 1)))
-
-    shape = (64, 64, 65)
-    elements = np.prod(shape)
-    data_3d = np.arange(elements, dtype=np.float32).reshape(shape)
-    save_mrc("tmp_transpose_3d_in_place_021_data.mrc", data_3d)
-    save_mrc("tmp_transpose_3d_in_place_021_expected.mrc", np.transpose(data_3d, (1, 0, 2)))
-
-    shape = (64, 65, 65)
-    elements = np.prod(shape)
-    data_3d = np.arange(elements, dtype=np.float32).reshape(shape)
-    save_mrc("tmp_transpose_3d_in_place_102_data.mrc", data_3d)
-    save_mrc("tmp_transpose_3d_in_place_102_expected.mrc", np.transpose(data_3d, (0, 2, 1)))
-
-    shape = (64, 66, 64)
-    elements = np.prod(shape)
-    data_3d = np.arange(elements, dtype=np.float32).reshape(shape)
-    save_mrc("tmp_transpose_3d_in_place_210_data.mrc", data_3d)
-    save_mrc("tmp_transpose_3d_in_place_210_expected.mrc", np.transpose(data_3d, (2, 1, 0)))
+    parameters = util.load_yaml("param.yaml")["transpose"]
+    generate_inputs(parameters['inputs'])
+    generate_expected(parameters['tests'])

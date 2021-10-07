@@ -1,0 +1,17 @@
+reductions:
+  input:
+    batches: 5
+    vectors: 10
+    elements: 1000
+    path: tmp_reduction_input.mrc
+    path_weights: tmp_reduction_weights.mrc
+  sum: tmp_reduction_add.mrc
+  mean: tmp_reduction_mean.mrc
+  weighted_mean: tmp_reduction_weighted_mean.mrc
+
+stats:
+  input:
+    batches: 10
+    shape: [100,100]
+    path: tmp_stats_input.mrc
+  output: tmp_stats_output.yaml

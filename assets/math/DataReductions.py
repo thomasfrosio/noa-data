@@ -1,53 +1,50 @@
-import os
 import numpy as np
-import mrcfile
+from assets import util
 
 
-def save_mrc(filename, data):
-    with mrcfile.new(filename, overwrite=True) as mrc:
-        mrc.set_data(data)
+def generate_stats(param):
+    # Input:
+    batches = param['input']['batches']
+    shape = param['input']['shape']
+    data = np.random.randn(batches, shape[1], shape[0]).astype(np.float32)
+    data += np.linspace(0, 3, data.size).reshape(data.shape)
+    util.save_mrc(param['input']['path'], data)
 
-
-def save_txt(filename, string):
-    with open(filename, "w+") as file:
-        file.write(string)
-
-
-def generate_stats():
-    batches = 5
-    data = np.random.randn(batches, 100, 100).astype(np.float32)
-    data += np.linspace(0, 3, batches * 10000).reshape(data.shape)
-    save_mrc("./tmp_stats_random_array.mrc", data)
-    stats = ""
+    # Outputs:
+    results = dict()
     for batch in range(batches):
-        stats += "{}\n".format(np.min(data[batch, ...]))
-    for batch in range(batches):
-        stats += "{}\n".format(np.max(data[batch, ...]))
-    for batch in range(batches):
-        stats += "{}\n".format(np.sum(data[batch, ...]))
-    for batch in range(batches):
-        stats += "{}\n".format(np.mean(data[batch, ...]))
-    for batch in range(batches):
-        stats += "{}\n".format(np.var(data[batch, ...]))
-    for batch in range(batches):
-        stats += "{}\n".format(np.std(data[batch, ...]))
-    save_txt("./tmp_stats_random_array.txt", stats)
+        results[batch] = {'min': float(np.min(data[batch, ...])),
+                          'max': float(np.max(data[batch, ...])),
+                          'sum': float(np.sum(data[batch, ...])),
+                          'mean': float(np.mean(data[batch, ...])),
+                          'var': float(np.var(data[batch, ...])),
+                          'std': float(np.std(data[batch, ...]))}
+    util.save_yaml(param['output'], results)
+    print("\t-- Generated: input/expected stats")
 
 
-def generate_reductions():
-    batches = 5
-    vectors = np.random.randn(batches, 10, 100).astype(np.float32)  # 5 batches, 10 vectors of 1000 elements to reduce.
-    vectors += np.linspace(0, 3, batches * 1000).reshape(vectors.shape)
-    save_mrc("./tmp_reduction_random_vectors.mrc", vectors)
-    save_mrc("./tmp_reduction_reduce_add.mrc", np.sum(vectors, axis=1))
-    save_mrc("./tmp_reduction_reduce_mean.mrc", np.mean(vectors, axis=1))
+def generate_reductions(param):
+    # Inputs:
+    batches = param['input']['batches']
+    nb_vectors = param['input']['vectors']
+    elements_per_vector = param['input']['elements']
 
-    weights = np.random.randn(1, 10, 100).astype(np.float32) + 1
-    save_mrc("./tmp_reduction_random_weights.mrc", weights)
-    save_mrc("./tmp_reduction_reduce_weighted_mean.mrc", np.sum(vectors * weights, axis=1) / np.sum(weights, axis=1))
+    vectors = np.random.randn(batches, nb_vectors, elements_per_vector).astype(np.float32)
+    vectors += np.linspace(0, 3, vectors.size).reshape(vectors.shape)
+    util.save_mrc(param['input']['path'], vectors)
+    weights = np.random.randn(1, nb_vectors, elements_per_vector).astype(np.float32) + 1
+    util.save_mrc(param['input']['path_weights'], weights)
+
+    # Outputs: reduce vectors into one.
+    util.save_mrc(param['sum'], np.sum(vectors, axis=1))
+    util.save_mrc(param['mean'], np.mean(vectors, axis=1))
+    util.save_mrc(param['weighted_mean'], np.sum(vectors * weights, axis=1) / np.sum(weights, axis=1))
+    print("\t-- Generated: input/expected reductions")
 
 
 if __name__ == '__main__':
-    os.chdir(os.path.abspath(os.path.dirname(__file__)))
-    generate_stats()
-    generate_reductions()
+    util.set_cwd(__file__)
+
+    parameters = util.load_yaml("param.yaml")
+    generate_stats(parameters['stats'])
+    generate_reductions(parameters['reductions'])
