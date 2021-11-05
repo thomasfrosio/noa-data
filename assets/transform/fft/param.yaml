@@ -1,0 +1,33 @@
+apply2D:
+  inputs:
+    0: &input0 tmp_input2D_00.mrc # [256,256]
+    1: &input1 tmp_input2D_01.mrc # [256,512]
+
+  tests:
+    0:
+      input: *input0
+      scale: [ 1,1 ]
+      rotate: 30 # deg
+      shift: [ 0,0 ]
+      max_frequency: 0.5
+      interp: INTERP_LINEAR
+    1:
+      input: *input1
+      scale: [ 1,1 ]
+      rotate: 30 # deg
+      shift: [ 0,0 ]
+      max_frequency: 0.5
+      interp: INTERP_LINEAR
+
+shift:
+  2D:
+    shape: [ 64,71 ]
+    shift: [ -32,25 ]
+    input: tmp_shift2D_input.mrc
+    output: tmp_shift2D_00.mrc
+
+  3D:
+    shape: [ 64,71,68 ]
+    shift: [ -32,25,33 ]
+    input: tmp_shift3D_input.mrc
+    output: tmp_shift3D_00.mrc
