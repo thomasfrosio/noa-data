@@ -12,7 +12,7 @@ def generate_assets(param):
     util.save_mrc(param['input'], half)
 
     # Get the redundant centered shifts.
-    shifts = util.get_phase_shift(param['shape'], param['shift'])
+    shifts = util.fft_get_phase_shift(param['shape'], param['shift'])
     img = img * shifts
 
     # Go from redundant centered to non-redundant non-centered.
