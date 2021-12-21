@@ -1,0 +1,158 @@
+apply2D:
+  inputs:
+    # There's a bug/limitation in the C++ implementation for non-redundant FFTs.
+    # The workaround is to low-pass filter the real-valued Nyquist on even sizes.
+    - name: &input2D_0 tmp_apply2D_input_00.mrc
+      shape: [ 256,256 ]
+    - name: &input2D_1 tmp_apply2D_input_01.mrc
+      shape: [ 255,513 ]
+
+  tests: # scale, rotate, then shift
+    # squares
+    0:
+      input: *input2D_0
+      expected: tmp_apply2D_00.mrc
+      scale: [ 0.9,1.1 ]
+      rotate: 10 # deg
+      center: [ 128,128 ]
+      shift: [ 0,0 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+    1:
+      input: *input2D_0
+      expected: tmp_apply2D_01.mrc
+      scale: [ 1,1 ]
+      rotate: 45 # deg
+      center: [ 128,128 ]
+      shift: [ -15,15 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+    2:
+      input: *input2D_0
+      expected: tmp_apply2D_02.mrc
+      scale: [ 1,1.5 ]
+      rotate: -45 # deg
+      center: [ 98,98 ]
+      shift: [ 0,30 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+
+    # rectangles
+    3:
+      input: *input2D_1
+      expected: tmp_apply2D_10.mrc
+      scale: [ 0.9,1.1 ]
+      rotate: 30 # deg
+      center: [ 127,256 ]
+      shift: [ 0,0 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+    4:
+      input: *input2D_1
+      expected: tmp_apply2D_11.mrc
+      scale: [ 1,1 ]
+      rotate: 45 # deg
+      center: [ 127,256 ]
+      shift: [ -30,30 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+    5:
+      input: *input2D_1
+      expected: tmp_apply2D_12.mrc
+      scale: [ 1,1.5 ]
+      rotate: -45 # deg
+      center: [ 97,225 ]
+      shift: [ 0,30 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+
+apply3D:
+  inputs:
+    - name: &input3D_0 tmp_apply3D_input_00.mrc
+      shape: [ 160,160,160 ]
+    - name: &input3D_1 tmp_apply3D_input_01.mrc
+      shape: [ 321,160,161 ]
+
+  tests: # scale, rotate, then shift
+    0:
+      input: *input3D_0
+      expected: tmp_apply3D_00.mrc
+      scale: [ 1,1,1 ]
+      rotate: [ 30,0,0 ] # ZYZ intrinsic deg
+      center: [ 80,80,80 ]
+      shift: [ 0,0,0 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+    1:
+      input: *input3D_0
+      expected: tmp_apply3D_01.mrc
+      scale: [ 1,1,1 ]
+      rotate: [ 45,0,0 ] # ZYZ intrinsic deg
+      center: [ 80,80,80 ]
+      shift: [ -20,11.5,0 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+    2:
+      input: *input3D_0
+      expected: tmp_apply3D_02.mrc
+      scale: [ 0.8,1,1 ]
+      rotate: [ -30,0,0 ] # ZYZ intrinsic deg
+      center: [ 65,65,65 ]
+      shift: [ -20,20,0 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+
+    3:
+      input: *input3D_1
+      expected: tmp_apply3D_10.mrc
+      scale: [ 1,1,1 ]
+      rotate: [ 30,0,0 ] # ZYZ intrinsic deg
+      center: [ 160,80,80 ]
+      shift: [ 0,0,0 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+    4:
+      input: *input3D_1
+      expected: tmp_apply3D_11.mrc
+      scale: [ 1,1,1 ]
+      rotate: [ 45,0,0 ] # ZYZ intrinsic deg
+      center: [ 160,80,80 ]
+      shift: [ -40,20,0 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+    5:
+      input: *input3D_1
+      expected: tmp_apply3D_12.mrc
+      scale: [ 1.5,1,1 ]
+      rotate: [ -30,0,0 ] # ZYZ intrinsic deg
+      center: [ 128,65,65 ]
+      shift: [ 0,25,0 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+
+apply2D_sym:
+  tests:
+    0:
+      input: *input2D_0
+      expected: apply2D_symmetry_00.mrc
+      scale: [ 1,1 ]
+      rotate: 0 # deg
+      symmetry: C4
+      center: [ 128,128 ]
+      shift: [ 0,0 ]
+      cutoff: 0.5
+      interp: INTERP_LINEAR
+      normalize: true
+
+shift:
+  2D:
+    shape: [ 64,71 ]
+    shift: [ -32,25 ]
+    input: tmp_shift2D_input.mrc
+    output: tmp_shift2D_00.mrc
+
+  3D:
+    shape: [ 64,71,68 ]
+    shift: [ -32,25,33 ]
+    input: tmp_shift3D_input.mrc
+    output: tmp_shift3D_00.mrc

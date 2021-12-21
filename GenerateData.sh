@@ -23,9 +23,9 @@ echo -e "${GREEN}noa-tests: generating data - start${NC}"
 find assets -type f -name "Data*.py" -exec echo "noa-tests: running" {} \; -exec python {} \;
 echo -e "${GREEN}noa-tests: generating data - done${NC}"
 
-NOA_TEST_DATA="$(
+PATH_NOA_DATA="$(
   cd "$(dirname "$0")" >/dev/null 2>&1 || exit
   pwd -P
 )" # https://stackoverflow.com/questions/4774054
 
-echo -e "${GREEN}noa-tests: remember to export NOA_TEST_DATA to \"${NOA_TEST_DATA}\"${NC}"
+echo -e "${GREEN}noa-tests: remember to export PATH_NOA_DATA to \"${PATH_NOA_DATA}\"${NC}"

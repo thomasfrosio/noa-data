@@ -76,19 +76,17 @@ def apply(img, scale, angle, center, shift, cutoff):
     shape = np.flip(img.shape)
     dft = np.fft.fftshift(np.fft.fftn(img, norm='ortho'))
     dft = dft * util.fft_get_phase_shift(shape, -np.array(center))
-
     dft_rotate = apply_affine(dft, scale, angle)
     dft_rotate = dft_rotate * util.fft_get_phase_shift(shape, np.array(center) + shift)
     dft_rotate *= util.fft_get_mask_cutoff(shape, cutoff)
-    util.save_mrc("test_python_real_fft_1.mrc", np.real(dft_rotate))
-    dft_rotate = np.fft.ifftn(np.fft.ifftshift(dft_rotate), norm='ortho')
+    dft_rotate = np.real(np.fft.ifftn(np.fft.ifftshift(dft_rotate), norm='ortho'))
     return dft_rotate
 
 
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    for key in ['apply2D']:  # , 'apply3D'
+    for key in ['apply2D', 'apply3D']:
         parameters = util.load_yaml('param.yaml')[key]
         generate_input(parameters['inputs'])
 

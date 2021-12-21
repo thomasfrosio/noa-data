@@ -8,7 +8,7 @@ Usage:
     - Run this script to generate the test data:
       >> <noa-data>/GenerateData.sh
     - As specified by GenerateData.sh, set the environmental variable
-      NOA_TEST_DATA to <noa-data>. This variable is used by noa_test to
+      PATH_NOA_DATA to <noa-data>. This variable is used by noa_test to
       locate the test data.
     - Run noa_test.
 
