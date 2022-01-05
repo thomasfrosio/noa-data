@@ -35,6 +35,6 @@ def generate_expected(param):
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    parameters = util.load_yaml("param.yaml")["transpose"]
+    parameters = util.load_yaml("tests.yaml")["transpose"]
     generate_inputs(parameters['inputs'])
     generate_expected(parameters['tests'])

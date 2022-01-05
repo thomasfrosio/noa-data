@@ -142,7 +142,7 @@ def generate_apply3d(param):
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    parameters = util.load_yaml('param.yaml')
+    parameters = util.load_yaml('tests.yaml')
     generate_input(parameters['input3D'])
 
     # This is spline interpolation, so order=3 is cubic spline which is not quite equivalent to INTERP_CUBIC and

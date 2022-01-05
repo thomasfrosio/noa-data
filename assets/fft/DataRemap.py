@@ -13,6 +13,6 @@ def generate_fftshift(param, max_dim, nb_dim):
 
 if __name__ == '__main__':
     util.set_cwd(__file__)
-    parameters = util.load_yaml("param.yaml")['remap']
+    parameters = util.load_yaml("tests.yaml")['remap']
     generate_fftshift(parameters['2D'], 512, 2)
     generate_fftshift(parameters['3D'], 128, 3)

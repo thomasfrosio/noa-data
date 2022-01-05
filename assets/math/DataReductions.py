@@ -45,6 +45,6 @@ def generate_reductions(param):
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    parameters = util.load_yaml("param.yaml")
+    parameters = util.load_yaml("tests.yaml")
     generate_stats(parameters['stats'])
     generate_reductions(parameters['reductions'])

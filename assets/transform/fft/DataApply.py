@@ -87,7 +87,7 @@ if __name__ == '__main__':
     util.set_cwd(__file__)
 
     for key in ['apply2D', 'apply3D']:
-        parameters = util.load_yaml('param.yaml')[key]
+        parameters = util.load_yaml('tests.yaml')[key]
         generate_input(parameters['inputs'])
 
         for i in parameters['tests']:

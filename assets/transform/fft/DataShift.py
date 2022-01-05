@@ -25,6 +25,7 @@ def generate_assets(param):
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    parameters = util.load_yaml('param.yaml')['shift']
+    parameters = util.load_yaml('tests.yaml')['shift']
     generate_assets(parameters['2D'])
     generate_assets(parameters['3D'])
+    print("\t-- Generated: phase shifts")

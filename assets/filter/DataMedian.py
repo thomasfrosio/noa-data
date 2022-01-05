@@ -44,6 +44,6 @@ def generate_medfilt(param):
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    parameters = util.load_yaml('param.yaml')['median']
+    parameters = util.load_yaml('tests.yaml')['median']
     generate_inputs(parameters['inputs'])
     generate_medfilt(parameters['tests'])

@@ -100,7 +100,7 @@ def generate_conv_separable(param):
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    parameters = util.load_yaml('param.yaml')
+    parameters = util.load_yaml('tests.yaml')
     generate_inputs(parameters['convolve']['inputs'])
     generate_filters(parameters['convolve']['filters'])
     generate_conv(parameters['convolve']['tests'])
