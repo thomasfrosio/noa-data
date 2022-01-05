@@ -8,5 +8,5 @@ setup(
     author_email='frosiot@gmail.com',
     description='Assets for noa',
     packages=find_packages(),
-    install_requires=['numpy', 'scipy', 'mrcfile']
+    install_requires=['numpy', 'scipy', 'mrcfile', 'pyyaml']
 )
