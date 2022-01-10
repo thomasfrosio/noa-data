@@ -111,57 +111,57 @@ scale2D:
       interp: INTERP_LINEAR
       border: BORDER_PERIODIC
 
-translate2D:
+shift2D:
   input: *input2D
   border_value: 1.3
   shift: [ 10, -20.6 ]
   tests:
     0:
-      expected: tmp_translate2D_test00.mrc
+      expected: tmp_shift2D_test00.mrc
       interp: INTERP_NEAREST
       border: BORDER_ZERO
     1:
-      expected: tmp_translate2D_test01.mrc
+      expected: tmp_shift2D_test01.mrc
       interp: INTERP_NEAREST
       border: BORDER_VALUE
     2:
-      expected: tmp_translate2D_test02.mrc
+      expected: tmp_shift2D_test02.mrc
       interp: INTERP_NEAREST
       border: BORDER_CLAMP
     3:
-      expected: tmp_translate2D_test03.mrc
+      expected: tmp_shift2D_test03.mrc
       interp: INTERP_NEAREST
       border: BORDER_REFLECT
     4:
-      expected: tmp_translate2D_test04.mrc
+      expected: tmp_shift2D_test04.mrc
       interp: INTERP_NEAREST
       border: BORDER_MIRROR
     5:
-      expected: tmp_translate2D_test05.mrc
+      expected: tmp_shift2D_test05.mrc
       interp: INTERP_NEAREST
       border: BORDER_PERIODIC
     6:
-      expected: tmp_translate2D_test06.mrc
+      expected: tmp_shift2D_test06.mrc
       interp: INTERP_LINEAR
       border: BORDER_ZERO
     7:
-      expected: tmp_translate2D_test07.mrc
+      expected: tmp_shift2D_test07.mrc
       interp: INTERP_LINEAR
       border: BORDER_VALUE
     8:
-      expected: tmp_translate2D_test08.mrc
+      expected: tmp_shift2D_test08.mrc
       interp: INTERP_LINEAR
       border: BORDER_CLAMP
     9:
-      expected: tmp_translate2D_test09.mrc
+      expected: tmp_shift2D_test09.mrc
       interp: INTERP_LINEAR
       border: BORDER_REFLECT
     10:
-      expected: tmp_translate2D_test10.mrc
+      expected: tmp_shift2D_test10.mrc
       interp: INTERP_LINEAR
       border: BORDER_MIRROR
     11:
-      expected: tmp_translate2D_test11.mrc
+      expected: tmp_shift2D_test11.mrc
       interp: INTERP_LINEAR
       border: BORDER_PERIODIC
 
@@ -368,62 +368,62 @@ scale3D:
       interp: INTERP_LINEAR
       border: BORDER_PERIODIC
 
-translate3D:
+shift3D:
   input: *input3D
   border_value: 1.3
   shift: [ -5.4, 10, -20.6 ]
   center: [ 31.5, 31.5, 31.5 ]
   tests:
     0:
-      expected: tmp_translate3D_test00.mrc
+      expected: tmp_shift3D_test00.mrc
       interp: INTERP_NEAREST
       border: BORDER_ZERO
     1:
-      expected: tmp_translate3D_test01.mrc
+      expected: tmp_shift3D_test01.mrc
       interp: INTERP_NEAREST
       border: BORDER_VALUE
     2:
-      expected: tmp_translate3D_test02.mrc
+      expected: tmp_shift3D_test02.mrc
       interp: INTERP_NEAREST
       border: BORDER_CLAMP
     3:
-      expected: tmp_translate3D_test03.mrc
+      expected: tmp_shift3D_test03.mrc
       interp: INTERP_NEAREST
       border: BORDER_REFLECT
     4:
-      expected: tmp_translate3D_test04.mrc
+      expected: tmp_shift3D_test04.mrc
       interp: INTERP_NEAREST
       border: BORDER_MIRROR
     5:
-      expected: tmp_translate3D_test05.mrc
+      expected: tmp_shift3D_test05.mrc
       interp: INTERP_NEAREST
       border: BORDER_PERIODIC
     6:
-      expected: tmp_translate3D_test06.mrc
+      expected: tmp_shift3D_test06.mrc
       interp: INTERP_LINEAR
       border: BORDER_ZERO
     7:
-      expected: tmp_translate3D_test07.mrc
+      expected: tmp_shift3D_test07.mrc
       interp: INTERP_LINEAR
       border: BORDER_VALUE
     8:
-      expected: tmp_translate3D_test08.mrc
+      expected: tmp_shift3D_test08.mrc
       interp: INTERP_LINEAR
       border: BORDER_CLAMP
     9:
-      expected: tmp_translate3D_test09.mrc
+      expected: tmp_shift3D_test09.mrc
       interp: INTERP_LINEAR
       border: BORDER_REFLECT
     10:
-      expected: tmp_translate3D_test10.mrc
+      expected: tmp_shift3D_test10.mrc
       interp: INTERP_LINEAR
       border: BORDER_MIRROR
     11:
-      expected: tmp_translate3D_test11.mrc
+      expected: tmp_shift3D_test11.mrc
       interp: INTERP_LINEAR
       border: BORDER_PERIODIC
 
-apply3D: # scale, rotate, then translate
+apply3D: # scale, rotate, then shift
   input: *input3D
   border_value: 1.3
   center: [ 31.5, 31.5, 31.5 ]

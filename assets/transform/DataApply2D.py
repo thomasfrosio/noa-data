@@ -133,5 +133,5 @@ if __name__ == '__main__':
     # be tested against manually checked data.
     generate_rotate2d(parameters['rotate2D'])
     generate_scale2d(parameters['scale2D'])
-    generate_translate2d(parameters['translate2D'])
+    generate_translate2d(parameters['shift2D'])
     generate_apply2d(parameters['apply2D'])

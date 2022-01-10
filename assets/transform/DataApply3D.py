@@ -150,5 +150,5 @@ if __name__ == '__main__':
     # be tested against manually checked data.
     generate_rotate3d(parameters['rotate3D'])
     generate_scale3d(parameters['scale3D'])
-    generate_translate3d(parameters['translate3D'])
+    generate_translate3d(parameters['shift3D'])
     generate_apply3d(parameters['apply3D'])
