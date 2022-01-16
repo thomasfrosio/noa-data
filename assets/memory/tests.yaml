@@ -204,18 +204,18 @@ resize: # the inputs are a range from 0 to N
     border_value: 0
     batches: 1
 
-remap:
+index:
   # the input arrays are set with values from 0 to N, subregions are extracted,
   # the arrays are reset to value=4 and subregions are re-inserted.
   0:
     shape: [ 512, 513, 1 ]
     sub_shape: [ 62, 63, 1 ]
-    sub_centers:
-      - [ 30, 31, 0 ]
-      - [ 500, 500, 0 ]
-      - [ 128, 32, 0 ]
-      - [ 350, 451, 0 ]
-      - [ 512, 0, 0 ]
+    sub_origins:
+      - [ -1, 0, 0 ]
+      - [ 469, 469, 0 ]
+      - [ 97, 1, 0 ]
+      - [ 319, 420, 0 ]
+      - [ 481, -31, 0 ]
     expected_extract:
       - extract_00.mrc
       - extract_01.mrc
@@ -229,10 +229,10 @@ remap:
   1:
     shape: [ 256, 255, 50 ]
     sub_shape: [ 55, 60, 1 ]
-    sub_centers:
-      - [ 0, 0, 0 ]
-      - [ 128, 32, 24 ]
-      - [ 0, 255, 0 ]
+    sub_origins:
+      - [ -27, -30, 0 ]
+      - [ 101, 2, 24 ]
+      - [ -27, 225, 0 ]
     expected_extract:
       - extract_10.mrc
       - extract_11.mrc
@@ -244,10 +244,10 @@ remap:
   2:
     shape: [ 128, 127, 126 ]
     sub_shape: [ 40, 42, 43 ]
-    sub_centers:
-      - [ 30, 31, 20 ]
-      - [ 127, 126, 125 ]
-      - [ 64, 117, 120 ]
+    sub_origins:
+      - [ 10, 10, -1 ]
+      - [ 107, 105, 104 ]
+      - [ 44, 96, 99 ]
     expected_extract:
       - extract_20.mrc
       - extract_21.mrc
