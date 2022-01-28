@@ -6,7 +6,7 @@ from assets import util
 
 def generate_inputs(param):
     # 2D
-    shape = np.flip(param['2D']['shape'])
+    shape = param['2D']['shape'][1::]
     elements = np.prod(shape)
     img = np.arange(elements).astype(np.float32)
     img[np.random.randint(0, elements - 1, size=elements // 100)] *= 100
@@ -14,7 +14,7 @@ def generate_inputs(param):
     util.save_mrc(param['2D']['path'], img)
 
     # 3D
-    shape = np.flip(param['3D']['shape'])
+    shape = param['3D']['shape'][1::]
     elements = np.prod(shape)
     img = np.arange(elements).astype(np.float32)
     img[np.random.randint(0, elements - 1, size=elements // 100)] *= 100

@@ -11,7 +11,7 @@ def get_kernel(size, sigma):
 
 def generate_inputs(param):
     # 2D
-    shape_2d = np.flip(param['2D']['shape'])
+    shape_2d = param['2D']['shape'][1::]
     img_2d = np.ones(shape_2d).astype(np.float64)
     img_2d += np.random.randn(shape_2d[0], shape_2d[1], shape_2d[2])
     img_2d[:, 100:150, :] += 100
@@ -19,7 +19,7 @@ def generate_inputs(param):
     util.save_mrc(param['2D']['path'], img_2d)
 
     # 3D
-    shape_3d = np.flip(param['3D']['shape'])
+    shape_3d = param['3D']['shape'][1::]
     img_3d = np.ones(shape_3d).astype(np.float64)
     img_3d += np.random.randn(shape_3d[0], shape_3d[1], shape_3d[2])
     img_3d[30:91, :, :] += 100
@@ -34,21 +34,21 @@ def generate_filters(param):
         shape = param[i]['shape']
         sigma = param[i]['sigma']
         if len(shape) == 1:
-            kernel = np.zeros((1, 2, shape[0]), dtype=np.float64)  # 2D because of mrcfile
-            kernel[0, 0, :] = get_kernel(shape[0], sigma)
+            kernel = np.zeros((1, 2, shape[-1]), dtype=np.float64)  # 2D because of mrcfile
+            kernel[0, 0, :] = get_kernel(shape[-1], sigma)
             kernel /= np.sum(kernel)
             util.save_mrc(param[i]['path'], kernel)
         elif len(shape) == 2:
-            kernel = np.zeros((1, shape[1], shape[0]), dtype=np.float64)
-            kernel += get_kernel(shape[0], sigma).reshape((1, 1, shape[0]))
-            kernel += get_kernel(shape[1], sigma).reshape((1, shape[1], 1))
+            kernel = np.zeros((1, shape[-2], shape[-1]), dtype=np.float64)
+            kernel += get_kernel(shape[-1], sigma).reshape((1, 1, shape[-1]))
+            kernel += get_kernel(shape[-2], sigma).reshape((1, shape[-2], 1))
             kernel /= np.sum(kernel)
             util.save_mrc(param[i]['path'], kernel)
         elif len(shape) == 3:
-            kernel = np.zeros(np.flip(shape), dtype=np.float64)
-            kernel += get_kernel(shape[0], sigma).reshape((1, 1, shape[0]))
-            kernel += get_kernel(shape[1], sigma).reshape((1, shape[1], 1))
-            kernel += get_kernel(shape[2], sigma).reshape((shape[2], 1, 1))
+            kernel = np.zeros((shape[-3], shape[-2], shape[-1]), dtype=np.float64)
+            kernel += get_kernel(shape[-1], sigma).reshape((1, 1, shape[-1]))
+            kernel += get_kernel(shape[-2], sigma).reshape((1, shape[-2], 1))
+            kernel += get_kernel(shape[-3], sigma).reshape((shape[-3], 1, 1))
             kernel /= np.sum(kernel)
             util.save_mrc(param[i]['path'], kernel)
     print("\t-- Generated: filters")
@@ -86,11 +86,11 @@ def generate_conv_separable(param):
         dims = param[i]['dim']
         for dim in dims:
             if dim == 0:
-                array = scipy_convolve(array, kernel.reshape((1, 1, kernel_size)))
+                array = scipy_convolve(array, kernel.reshape((kernel_size, 1, 1)))
             elif dim == 1:
                 array = scipy_convolve(array, kernel.reshape((1, kernel_size, 1)))
             elif dim == 2:
-                array = scipy_convolve(array, kernel.reshape((kernel_size, 1, 1)))
+                array = scipy_convolve(array, kernel.reshape((1, 1, kernel_size)))
             else:
                 raise RuntimeError
         util.save_mrc(param[i]['expected'], array)
