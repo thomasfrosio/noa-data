@@ -1,101 +1,101 @@
-lowpass:
+lowpass: # assets are not batched
   0:
-    shape: [ 256,256,1 ]
+    shape: [ 3,1,256,256 ]
     cutoff: 0
     width: 0
     path: lowpass_00.mrc
   1:
-    shape: [ 256,256,1 ]
+    shape: [ 3,1,256,256 ]
     cutoff: 0.5
     width: 0
     path: lowpass_01.mrc
   2:
-    shape: [ 256,256,1 ]
+    shape: [ 3,1,256,256 ]
     cutoff: 0.35
     width: 0.1
     path: lowpass_02.mrc
   3:
-    shape: [ 512,256,1 ]
+    shape: [ 3,1,256,512 ]
     cutoff: 0.2
     width: 0.3
     path: lowpass_03.mrc
   4:
-    shape: [ 128,128,128 ]
+    shape: [ 3,128,128,128 ]
     cutoff: 0
     width: 0
     path: lowpass_04.mrc
   5:
-    shape: [ 128,128,128 ]
+    shape: [ 3,128,128,128 ]
     cutoff: 0.5
     width: 0
     path: lowpass_05.mrc
   6:
-    shape: [ 64,128,128 ]
+    shape: [ 3,128,128,64 ]
     cutoff: 0.2
     width: 0.3
     path: lowpass_06.mrc
 
-highpass:
+highpass: # assets are not batched
   0:
-    shape: [ 256,256,1 ]
+    shape: [ 3,1,256,256 ]
     cutoff: 0
     width: 0
     path: highpass_00.mrc
   1:
-    shape: [ 256,256,1 ]
+    shape: [ 3,1,256,256 ]
     cutoff: 0.5
     width: 0
     path: highpass_01.mrc
   2:
-    shape: [ 256,256,1 ]
+    shape: [ 3,1,256,256 ]
     cutoff: 0.35
     width: 0.1
     path: highpass_02.mrc
   3:
-    shape: [ 512,256,1 ]
+    shape: [ 3,1,256,512 ]
     cutoff: 0.2
     width: 0.3
     path: highpass_03.mrc
   4:
-    shape: [ 128,128,128 ]
+    shape: [ 3,128,128,128 ]
     cutoff: 0
     width: 0
     path: highpass_04.mrc
   5:
-    shape: [ 128,128,128 ]
+    shape: [ 3,128,128,128 ]
     cutoff: 0.5
     width: 0
     path: highpass_05.mrc
   6:
-    shape: [ 64,128,128 ]
+    shape: [ 3,128,128,64 ]
     cutoff: 0.2
     width: 0.3
     path: highpass_06.mrc
 
-bandpass:
+bandpass: # assets are not batched
   0:
-    shape: [ 256,256,1 ]
+    shape: [ 3,1,256,256 ]
     cutoff: [ 0.4,0.5 ]
     width: [ 0,0 ]
     path: bandpass_00.mrc
   1:
-    shape: [ 256,512,1 ]
+    shape: [ 3,1,512,256 ]
     cutoff: [ 0.3,0.45 ]
     width: [ 0.3,0.05 ]
     path: bandpass_01.mrc
   2:
-    shape: [ 128,128,1 ]
+    shape: [ 3,1,128,128 ]
     cutoff: [ 0.3,0.4 ]
     width: [ 0.05,0.05 ]
     path: bandpass_02.mrc
   3:
-    shape: [ 128,128,128 ]
+    shape: [ 3,128,128,128 ]
     cutoff: [ 0.2,0.45 ]
     width: [ 0.1,0.05 ]
     path: bandpass_03.mrc
   4:
-    shape: [ 64,128,128 ]
-    cutoff: [ 0.1, 0.3 ]
+    shape: [ 3,128,128,64 ]
+    cutoff: [ 0.1,0.3 ]
     width: [ 0,0.1 ]
     path: bandpass_04.mrc
 
@@ -111,29 +111,29 @@ remap:
 
 resize:
   input:
-    - shape: &shape2D [ 8, 8, 1 ]
+    - shape: &shape2D [ 1,1,8,8 ]
       path: &input2D resize_2D_input00.mrc
-    - shape: &shape2D_1 [ 12, 11, 1 ]
+    - shape: &shape2D_1 [ 1,1,11,12 ]
       path: &input2D_1 resize_2D_input01.mrc
 
   tests:
     0:
       shape_input: *shape2D
-      shape_expected: [ 10, 11, 1 ]
+      shape_expected: [ 1,1,11,10 ]
       input: *input2D
       expected: resize_2D_00.mrc
     1:
       shape_input: *shape2D
-      shape_expected: [ 12, 10, 1 ]
+      shape_expected: [ 1,1,10,12 ]
       input: *input2D
       expected: resize_2D_01.mrc
     2:
       shape_input: *shape2D_1
-      shape_expected: [ 8, 9, 1 ]
+      shape_expected: [ 1,1,9,8 ]
       input: *input2D_1
       expected: resize_2D_02.mrc
     3:
       shape_input: *shape2D_1
-      shape_expected: [ 9, 8, 1 ]
+      shape_expected: [ 1,1,8,9 ]
       input: *input2D_1
       expected: resize_2D_03.mrc
