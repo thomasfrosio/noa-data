@@ -1,5 +1,5 @@
-input2D: &input2D tmp_image2D.mrc  # shape: [256,256]
-input3D: &input3D tmp_image3D.mrc  # shape: [64,64,64]
+input2D: &input2D tmp_image2D.mrc  # shape: [1,1,256,256]
+input3D: &input3D tmp_image3D.mrc  # shape: [1,64,64,64]
 
 rotate2D:
   input: *input2D
@@ -59,7 +59,7 @@ rotate2D:
 scale2D:
   input: *input2D
   border_value: 1.3
-  scale: [ 0.6, 0.7 ]
+  scale: [ 0.7, 0.6 ]
   center: [ 128, 128 ]
   tests:
     0:
@@ -114,7 +114,7 @@ scale2D:
 shift2D:
   input: *input2D
   border_value: 1.3
-  shift: [ 10, -20.6 ]
+  shift: [ -20.6, 10 ]
   tests:
     0:
       expected: tmp_shift2D_test00.mrc
@@ -165,94 +165,94 @@ shift2D:
       interp: INTERP_LINEAR
       border: BORDER_PERIODIC
 
-apply2D: # scale, rotate, then shift
+transform2D: # scale, rotate, then shift
   input: *input2D
-  shape: [ 256, 256 ]
+  shape: [ 1, 1, 256, 256 ]
   border_value: 1.3
   center: [ 128, 128 ]
   scale: [ 0.7, 0.7 ]
   rotate: 35.5  # deg
-  shift: [ 5.5, -25.5 ]
+  shift: [ -25.5, 5.5 ]
   tests:
     0:
-      expected: tmp_apply2D_test00.mrc
+      expected: tmp_transform2D_test00.mrc
       interp: INTERP_NEAREST
       border: BORDER_ZERO
     1:
-      expected: tmp_apply2D_test01.mrc
+      expected: tmp_transform2D_test01.mrc
       interp: INTERP_NEAREST
       border: BORDER_VALUE
     2:
-      expected: tmp_apply2D_test02.mrc
+      expected: tmp_transform2D_test02.mrc
       interp: INTERP_NEAREST
       border: BORDER_CLAMP
     3:
-      expected: tmp_apply2D_test03.mrc
+      expected: tmp_transform2D_test03.mrc
       interp: INTERP_NEAREST
       border: BORDER_REFLECT
     4:
-      expected: tmp_apply2D_test04.mrc
+      expected: tmp_transform2D_test04.mrc
       interp: INTERP_NEAREST
       border: BORDER_MIRROR
     5:
-      expected: tmp_apply2D_test05.mrc
+      expected: tmp_transform2D_test05.mrc
       interp: INTERP_NEAREST
       border: BORDER_PERIODIC
     6:
-      expected: tmp_apply2D_test06.mrc
+      expected: tmp_transform2D_test06.mrc
       interp: INTERP_LINEAR
       border: BORDER_ZERO
     7:
-      expected: tmp_apply2D_test07.mrc
+      expected: tmp_transform2D_test07.mrc
       interp: INTERP_LINEAR
       border: BORDER_VALUE
     8:
-      expected: tmp_apply2D_test08.mrc
+      expected: tmp_transform2D_test08.mrc
       interp: INTERP_LINEAR
       border: BORDER_CLAMP
     9:
-      expected: tmp_apply2D_test09.mrc
+      expected: tmp_transform2D_test09.mrc
       interp: INTERP_LINEAR
       border: BORDER_REFLECT
     10:
-      expected: tmp_apply2D_test10.mrc
+      expected: tmp_transform2D_test10.mrc
       interp: INTERP_LINEAR
       border: BORDER_MIRROR
     11:
-      expected: tmp_apply2D_test11.mrc
+      expected: tmp_transform2D_test11.mrc
       interp: INTERP_LINEAR
       border: BORDER_PERIODIC
 
-apply2D_cubic: # scale then rotate
-  input: apply2D_cubic_input.mrc
-  shape: [ 481, 480 ]
-  center: [ 240, 239 ] # (n-1)/2
-  scale: [ 1.2, 0.9 ]
+transform2D_cubic: # scale then rotate
+  input: transform2D_cubic_input.mrc
+  shape: [ 1, 1, 480, 481 ]
+  center: [ 239, 240 ] # (n-1)/2
+  scale: [ 0.9, 1.2 ]
   rotate: -45  # deg
   border_value: 1.3
   tests:
     0:
-      expected: apply2D_cubic_test00.mrc
+      expected: transform2D_cubic_test00.mrc
       interp: INTERP_CUBIC
       border: BORDER_ZERO
     1:
-      expected: apply2D_cubic_test01.mrc
+      expected: transform2D_cubic_test01.mrc
       interp: INTERP_CUBIC_BSPLINE
       border: BORDER_ZERO
     2:
-      expected: apply2D_cubic_test02.mrc
+      expected: transform2D_cubic_test02.mrc
       interp: INTERP_CUBIC
       border: BORDER_CLAMP
     3:
-      expected: apply2D_cubic_test03.mrc
+      expected: transform2D_cubic_test03.mrc
       interp: INTERP_CUBIC_BSPLINE
       border: BORDER_CLAMP
     4:
-      expected: apply2D_cubic_test04.mrc
+      expected: transform2D_cubic_test04.mrc
       interp: INTERP_CUBIC
       border: BORDER_MIRROR
     5:
-      expected: apply2D_cubic_test05.mrc
+      expected: transform2D_cubic_test05.mrc
       interp: INTERP_CUBIC_BSPLINE
       border: BORDER_MIRROR
 
@@ -316,7 +316,7 @@ rotate3D:
 scale3D:
   input: *input3D
   border_value: 1.3
-  scale: [ 0.8, 0.6, 1.1 ]
+  scale: [ 1.1, 0.6, 0.8 ]
   center: [ 31.5, 31.5, 31.5 ]
   tests:
     0:
@@ -371,7 +371,7 @@ scale3D:
 shift3D:
   input: *input3D
   border_value: 1.3
-  shift: [ -5.4, 10, -20.6 ]
+  shift: [  -20.6, 10, -5.4 ]
   center: [ 31.5, 31.5, 31.5 ]
   tests:
     0:
@@ -423,149 +423,149 @@ shift3D:
       interp: INTERP_LINEAR
       border: BORDER_PERIODIC
 
-apply3D: # scale, rotate, then shift
+transform3D: # scale, rotate, then shift
   input: *input3D
   border_value: 1.3
   center: [ 31.5, 31.5, 31.5 ]
   scale: [ 0.7, 0.7, 0.7 ]
   euler: [ 90, -30, 45 ]  # ZYZ intrinsic, deg
-  shift: [ 4.7, 5.6, -5.2 ]
+  shift: [ -5.2, 5.6, 4.7 ]
   tests:
     0:
-      expected: tmp_apply3D_test00.mrc
+      expected: tmp_transform3D_test00.mrc
       interp: INTERP_NEAREST
       border: BORDER_ZERO
     1:
-      expected: tmp_apply3D_test01.mrc
+      expected: tmp_transform3D_test01.mrc
       interp: INTERP_NEAREST
       border: BORDER_VALUE
     2:
-      expected: tmp_apply3D_test02.mrc
+      expected: tmp_transform3D_test02.mrc
       interp: INTERP_NEAREST
       border: BORDER_CLAMP
     3:
-      expected: tmp_apply3D_test03.mrc
+      expected: tmp_transform3D_test03.mrc
       interp: INTERP_NEAREST
       border: BORDER_REFLECT
     4:
-      expected: tmp_apply3D_test04.mrc
+      expected: tmp_transform3D_test04.mrc
       interp: INTERP_NEAREST
       border: BORDER_MIRROR
     5:
-      expected: tmp_apply3D_test05.mrc
+      expected: tmp_transform3D_test05.mrc
       interp: INTERP_NEAREST
       border: BORDER_PERIODIC
     6:
-      expected: tmp_apply3D_test06.mrc
+      expected: tmp_transform3D_test06.mrc
       interp: INTERP_LINEAR
       border: BORDER_ZERO
     7:
-      expected: tmp_apply3D_test07.mrc
+      expected: tmp_transform3D_test07.mrc
       interp: INTERP_LINEAR
       border: BORDER_VALUE
     8:
-      expected: tmp_apply3D_test08.mrc
+      expected: tmp_transform3D_test08.mrc
       interp: INTERP_LINEAR
       border: BORDER_CLAMP
     9:
-      expected: tmp_apply3D_test09.mrc
+      expected: tmp_transform3D_test09.mrc
       interp: INTERP_LINEAR
       border: BORDER_REFLECT
     10:
-      expected: tmp_apply3D_test10.mrc
+      expected: tmp_transform3D_test10.mrc
       interp: INTERP_LINEAR
       border: BORDER_MIRROR
     11:
-      expected: tmp_apply3D_test11.mrc
+      expected: tmp_transform3D_test11.mrc
       interp: INTERP_LINEAR
       border: BORDER_PERIODIC
 
-apply3D_cubic: # scale then rotate
-  input: apply3D_cubic_input.mrc  # shape: [66,65,64]
-  center: [ 32, 32, 31 ]
+transform3D_cubic: # scale then rotate
+  input: transform3D_cubic_input.mrc  # shape: [1,64,65,66]
+  center: [ 31, 32, 32 ]
   scale: [ 0.8, 0.8, 0.8 ]
   euler: [ 0, 30, 0 ]  # ZYZ intrinsic, deg
   border_value: 1.3
   tests:
     0:
-      expected: apply3D_cubic_test00.mrc
+      expected: transform3D_cubic_test00.mrc
       interp: INTERP_CUBIC
       border: BORDER_ZERO
     1:
-      expected: apply3D_cubic_test01.mrc
+      expected: transform3D_cubic_test01.mrc
       interp: INTERP_CUBIC_BSPLINE
       border: BORDER_ZERO
     2:
-      expected: apply3D_cubic_test02.mrc
+      expected: transform3D_cubic_test02.mrc
       interp: INTERP_CUBIC
       border: BORDER_CLAMP
     3:
-      expected: apply3D_cubic_test03.mrc
+      expected: transform3D_cubic_test03.mrc
       interp: INTERP_CUBIC_BSPLINE
       border: BORDER_CLAMP
     4:
-      expected: apply3D_cubic_test04.mrc
+      expected: transform3D_cubic_test04.mrc
       interp: INTERP_CUBIC
       border: BORDER_MIRROR
     5:
-      expected: apply3D_cubic_test05.mrc
+      expected: transform3D_cubic_test05.mrc
       interp: INTERP_CUBIC_BSPLINE
       border: BORDER_MIRROR
 
-apply2D_symmetry:
-  input: apply2D_symmetry_input.mrc # [512,512]
+transform2D_symmetry:
+  input: transform2D_symmetry_input.mrc # [512,512]
   tests:
     0:
-      expected: apply2D_symmetry_test00.mrc
+      expected: transform2D_symmetry_test00.mrc
       shift: [ 10,10 ]
       symmetry: C2
       angle: 30 # deg
       center: [ 256,256 ]
       interp: INTERP_LINEAR
     1:
-      expected: apply2D_symmetry_test01.mrc
-      shift: [ 128,64 ]
+      expected: transform2D_symmetry_test01.mrc
+      shift: [ 64,128 ]
       symmetry: C5
       angle: 0 # deg
       center: [ 256,256 ]
       interp: INTERP_CUBIC_BSPLINE
     2:
-      expected: apply2D_symmetry_test02.mrc
+      expected: transform2D_symmetry_test02.mrc
       shift: [ 0,0 ]
       symmetry: C3
       angle: -45 # deg
-      center: [ 384,320 ]
+      center: [ 320,384 ]
       interp: INTERP_CUBIC_BSPLINE
     3:
-      expected: apply2D_symmetry_test03.mrc
-      shift: [ 50,0 ]
+      expected: transform2D_symmetry_test03.mrc
+      shift: [ 0,50 ]
       symmetry: C6
       angle: 0 # deg
       center: [ 256,256 ]
       interp: INTERP_COSINE
     4:
-      expected: apply2D_symmetry_test04.mrc
+      expected: transform2D_symmetry_test04.mrc
       shift: [ 0,0 ]
       symmetry: D2
       angle: 30 # deg
       center: [ 256,256 ]
       interp: INTERP_LINEAR
     5:
-      expected: apply2D_symmetry_test05.mrc
-      shift: [ 128, 64 ]
+      expected: transform2D_symmetry_test05.mrc
+      shift: [ 64,128 ]
       symmetry: D3
       angle: 0 # deg
       center: [ 256,256 ]
       interp: INTERP_LINEAR
 
-apply3D_symmetry:
+transform3D_symmetry:
   input:
-    0: &input3D_sym0 apply3D_symmetry_input00.mrc # [150,150,150]
-    1: &input3D_sym1 apply3D_symmetry_input01.mrc # [150,150,150]
+    0: &input3D_sym0 transform3D_symmetry_input00.mrc # [150,150,150]
+    1: &input3D_sym1 transform3D_symmetry_input01.mrc # [150,150,150]
   tests:
     0:
       input: *input3D_sym1
-      expected: apply3D_symmetry_test00.mrc
+      expected: transform3D_symmetry_test00.mrc
       shift: [ 0,0,0 ]
       symmetry: O
       angle: [0,0,0] # deg
@@ -573,7 +573,7 @@ apply3D_symmetry:
       interp: INTERP_LINEAR
     1:
       input: *input3D_sym0
-      expected: apply3D_symmetry_test01.mrc
+      expected: transform3D_symmetry_test01.mrc
       shift: [ 0,0,0 ]
       symmetry: I1
       angle: [ 0,0,0 ] # deg
@@ -581,7 +581,7 @@ apply3D_symmetry:
       interp: INTERP_LINEAR
     2:
       input: *input3D_sym0
-      expected: apply3D_symmetry_test02.mrc
+      expected: transform3D_symmetry_test02.mrc
       shift: [ 0,0,0 ]
       symmetry: I2
       angle: [ 0,0,0 ] # deg
@@ -589,15 +589,15 @@ apply3D_symmetry:
       interp: INTERP_LINEAR
     3:
       input: *input3D_sym1
-      expected: apply3D_symmetry_test03.mrc
-      shift: [ 34,34,50 ]
+      expected: transform3D_symmetry_test03.mrc
+      shift: [ 50,34,34 ]
       symmetry: c3
       angle: [ 0,30,0 ] # deg
       center: [ 75,75,75 ]
       interp: INTERP_LINEAR
     4:
       input: *input3D_sym1
-      expected: apply3D_symmetry_test04.mrc
+      expected: transform3D_symmetry_test04.mrc
       shift: [ 0,0,0 ]
       symmetry: d4
       angle: [ 90,-30,-90 ] # deg

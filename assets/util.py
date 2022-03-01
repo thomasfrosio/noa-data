@@ -2,6 +2,7 @@ import os
 import yaml
 import mrcfile
 import numpy as np
+from scipy import ndimage
 import warnings
 
 
@@ -82,65 +83,55 @@ def to_scipy_interp_mode(interp, border, value):
 
 
 # Affine ---------------------------------------------------------------------------------------------------------------
-
-def rot_y(angle_deg):
-    # In C++ noa, Y is the second axis, like here.
-    # In C++ noa, positive angle -> rotate CCW looking at origin
-    # This is the inverse of what scipy seem to use, so negate angle.
-    c = np.cos(np.deg2rad(-angle_deg))
-    s = np.sin(np.deg2rad(-angle_deg))
-    return np.array([[c, 0, s, 0],
-                     [0, 1, 0, 0],
-                     [-s, 0, c, 0],
-                     [0, 0, 0, 1]])
-
-
-def rot_z(angle_deg):
-    # In C++ noa, Z is the third axis. Here, it is the first axis.
-    # In C++ noa, positive angle -> rotate CCW looking at origin
-    # This is the inverse of what scipy seem to use, so negate angle.
-    c = np.cos(np.deg2rad(-angle_deg))
-    s = np.sin(np.deg2rad(-angle_deg))
-    return np.array([[1, 0, 0, 0],
-                     [0, c, -s, 0],
-                     [0, s, c, 0],
-                     [0, 0, 0, 1]])
-
-
 def matrix_rotate(angle_deg):
     """
     :param angle_deg: Rotation angle or ZYZ intrinsic euler angles, in degrees
     :return: Affine matrix encoding the rotation
     """
+
+    def rot_y(deg):
+        c = np.cos(np.deg2rad(deg))
+        s = np.sin(np.deg2rad(deg))
+        return np.array([[c, 0, -s, 0],
+                         [0, 1, 0, 0],
+                         [s, 0, c, 0],
+                         [0, 0, 0, 1]])
+
+    def rot_z(deg):
+        c = np.cos(np.deg2rad(deg))
+        s = np.sin(np.deg2rad(deg))
+        return np.array([[1, 0, 0, 0],
+                         [0, c, s, 0],
+                         [0, -s, c, 0],
+                         [0, 0, 0, 1]])
+
     if not hasattr(angle_deg, '__len__'):
-        # In C++ noa, positive angle -> rotate CCW looking at origin
-        # This is the inverse of what scipy seem to use, so negate angle.
-        c = np.cos(np.deg2rad(-angle_deg))
-        s = np.sin(np.deg2rad(-angle_deg))
-        return np.array([[c, -s, 0],
-                         [s, c, 0],
+        c = np.cos(np.deg2rad(angle_deg))
+        s = np.sin(np.deg2rad(angle_deg))
+        return np.array([[c, s, 0],
+                         [-s, c, 0],
                          [0, 0, 1]])
     elif len(angle_deg) == 3:
         # ZYZ intrinsic
-        return rot_z(angle_deg[0]) @ rot_y(angle_deg[1]) @ rot_z(angle_deg[2])
+        return rot_z(angle_deg[2]) @ rot_y(angle_deg[1]) @ rot_z(angle_deg[0])
     else:
         raise RuntimeError
 
 
 def matrix_translate(shift):
     """
-    :param shift: [x,y] or [x,y,z] shifts
+    :param shift: [y,x] or [z,y,x] shifts
     :return: Affine matrix encoding the shift.
              It is meant to be used on array with [z,y,x] shape.
     """
     if len(shift) == 2:
-        return np.array([[1, 0, shift[1]],
-                         [0, 1, shift[0]],
+        return np.array([[1, 0, shift[0]],
+                         [0, 1, shift[1]],
                          [0, 0, 1]])
     elif len(shift) == 3:
-        return np.array([[1, 0, 0, shift[2]],
+        return np.array([[1, 0, 0, shift[0]],
                          [0, 1, 0, shift[1]],
-                         [0, 0, 1, shift[0]],
+                         [0, 0, 1, shift[2]],
                          [0, 0, 0, 1]])
     else:
         raise RuntimeError
@@ -148,46 +139,53 @@ def matrix_translate(shift):
 
 def matrix_scale(scale):
     """
-    :param scale: [x,y] or [x,y,z] scale
+    :param scale: [y,x] or [z,y,x] scale
     :return: Affine matrix encoding the scale.
              It is meant to be used on array with [z,y,x] shape.
     """
     if len(scale) == 2:
-        return np.array([[scale[1], 0, 0],
-                         [0, scale[0], 0],
+        return np.array([[scale[0], 0, 0],
+                         [0, scale[1], 0],
                          [0, 0, 1]])
     elif len(scale) == 3:
-        return np.array([[scale[2], 0, 0, 0],
+        return np.array([[scale[0], 0, 0, 0],
                          [0, scale[1], 0, 0],
-                         [0, 0, scale[0], 0],
+                         [0, 0, scale[2], 0],
                          [0, 0, 0, 1]])
     else:
         raise RuntimeError
 
 
-# FFT ------------------------------------------------------------------------------------------------------------------
+def transform_affine(array, matrix, noa_interp, noa_border, border_value):
+    [scipy_interp_order, scipy_border, scipy_value] = to_scipy_interp_mode(noa_interp, noa_border, border_value)
+    return ndimage.affine_transform(array, matrix,
+                                    order=scipy_interp_order,
+                                    mode=scipy_border,
+                                    cval=scipy_value)
 
+
+# FFT ------------------------------------------------------------------------------------------------------------------
 def fft_get_phase_shift(shape, shift):
     """
-    :param shape:   [x,y] or [x,y,z] shape
-    :param shift:   [x,y] or [x,y,z] shifts
+    :param shape:   [y,x] or [z,y,x] shape
+    :param shift:   [y,x] or [z,y,x] shifts
     :return: Phase shifts for redundant centered FFTs
     """
     if np.size(shape) == 2:
-        x, y = (np.arange(shape[0], dtype=np.float32) - shape[0] // 2, # -5 -4 -3 -2 -1 0 1 2 3 4
-                np.arange(shape[1], dtype=np.float32) - shape[1] // 2)
+        x, y = (np.arange(shape[1], dtype=np.float32) - shape[1] // 2,  # -5 -4 -3 -2 -1 0 1 2 3 4
+                np.arange(shape[0], dtype=np.float32) - shape[0] // 2)
         gx, gy = np.meshgrid(x, y)
-        factors = -2 * np.pi * (shift[0] * gx / shape[0] +
-                                shift[1] * gy / shape[1])
+        factors = -2 * np.pi * (shift[1] * gx / shape[1] +
+                                shift[0] * gy / shape[0])
 
     elif np.size(shape) == 3:
-        x, y, z = (np.reshape(np.arange(shape[0], dtype=np.float32) - shape[0] // 2, (1, 1, -1)),
+        x, y, z = (np.reshape(np.arange(shape[2], dtype=np.float32) - shape[2] // 2, (1, 1, -1)),
                    np.reshape(np.arange(shape[1], dtype=np.float32) - shape[1] // 2, (1, -1, 1)),
-                   np.reshape(np.arange(shape[2], dtype=np.float32) - shape[2] // 2, (-1, 1, 1)))
+                   np.reshape(np.arange(shape[0], dtype=np.float32) - shape[0] // 2, (-1, 1, 1)))
         gz, gy, gx = np.meshgrid(z, y, x, indexing='ij')
-        factors = -2 * np.pi * (shift[0] * gx / shape[0] +
+        factors = -2 * np.pi * (shift[1] * gx / shape[1] +
                                 shift[1] * gy / shape[1] +
-                                shift[2] * gz / shape[2])
+                                shift[0] * gz / shape[0])
     else:
         raise RuntimeError
     return np.cos(factors) + 1j * np.sin(factors)
@@ -195,19 +193,19 @@ def fft_get_phase_shift(shape, shift):
 
 def fft_get_mask_cutoff(shape, cutoff):
     """
-    :param shape: [x,y] or [x,y,z] shape
+    :param shape: [y,x] or [z,y,x] shape
     :param cutoff: Frequency cutoff, in cycle/pix
     :return: Mask meant to be applied on redundant centered FFTs of [(z,)y,x] shape,
              to remove all components after the specified cutoff.
     """
     shape = np.array(shape, dtype=float)
-    vx = np.abs(np.arange(shape[0], dtype=np.float32) - shape[0] // 2) / (shape[0] // 2 * 2)
-    vy = np.abs(np.arange(shape[1], dtype=np.float32) - shape[1] // 2) / (shape[1] // 2 * 2)
+    vx = np.abs(np.arange(shape[-1], dtype=np.float32) - shape[-1] // 2) / (shape[-1] // 2 * 2)
+    vy = np.abs(np.arange(shape[-2], dtype=np.float32) - shape[-2] // 2) / (shape[-2] // 2 * 2)
 
     if np.size(shape) == 2:
         mask = vy.reshape((-1, 1)) ** 2 + vx.reshape((1, -1)) ** 2
     elif np.size(shape) == 3:
-        vz = np.abs(np.arange(shape[2], dtype=np.float32) - shape[2] // 2) / (shape[2] // 2 * 2)
+        vz = np.abs(np.arange(shape[0], dtype=np.float32) - shape[0] // 2) / (shape[0] // 2 * 2)
         mask = (vz.reshape((-1, 1, 1)) ** 2 +
                 vy.reshape((1, -1, 1)) ** 2 +
                 vx.reshape((1, 1, -1)) ** 2)

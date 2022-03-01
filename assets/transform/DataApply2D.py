@@ -1,41 +1,8 @@
 # Global:
 import numpy as np
-from scipy import ndimage
 
 # Local:
 from assets import util
-
-
-def matrix_rotate(angle_deg):
-    # Positive angle -> rotate CW looking at origin
-    # This is the inverse of what we have in noa, but it looks like that's what scipy uses.
-    c = np.cos(np.deg2rad(-angle_deg))
-    s = np.sin(np.deg2rad(-angle_deg))
-    return np.array([[c, -s, 0],
-                     [s, c, 0],
-                     [0, 0, 1]])
-
-
-def matrix_translate(shift):
-    # shift is [X,Y], so convert to [Y,X]
-    return np.array([[1, 0, shift[1]],
-                     [0, 1, shift[0]],
-                     [0, 0, 1]])
-
-
-def matrix_scale(scale):
-    # scale is [X,Y], so convert to [Y,X]
-    return np.array([[scale[1], 0, 0],
-                     [0, scale[0], 0],
-                     [0, 0, 1]])
-
-
-def compute_expected(array, matrix, noa_interp, noa_border, border_value):
-    [scipy_interp_order, scipy_border, scipy_value] = util.to_scipy_interp_mode(noa_interp, noa_border, border_value)
-    return ndimage.affine_transform(array, matrix,
-                                    order=scipy_interp_order,
-                                    mode=scipy_border,
-                                    cval=scipy_value)
 
 
 def generate_input(filename):
@@ -59,13 +26,13 @@ def generate_rotate2d(param):
     rotate = param['rotate']
     center = np.array(param['center'])
 
-    matrix = np.linalg.inv(matrix_translate(center) @
-                           matrix_rotate(rotate) @
-                           matrix_translate(-center))
+    matrix = np.linalg.inv(util.matrix_translate(center) @
+                           util.matrix_rotate(rotate) @
+                           util.matrix_translate(-center))
 
     tests = param['tests']
     for i in tests:
-        expected = compute_expected(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
+        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
         util.save_mrc(tests[i]['expected'], expected)
     print("\t-- Generated: rotate")
 
@@ -76,13 +43,13 @@ def generate_scale2d(param):
     scale = np.array(param['scale'])
     center = np.array(param['center'])
 
-    matrix = np.linalg.inv(matrix_translate(center) @
-                           matrix_scale(scale) @
-                           matrix_translate(-center))
+    matrix = np.linalg.inv(util.matrix_translate(center) @
+                           util.matrix_scale(scale) @
+                           util.matrix_translate(-center))
 
     tests = param['tests']
     for i in tests:
-        expected = compute_expected(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
+        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
         util.save_mrc(tests[i]['expected'], expected)
     print("\t-- Generated: scale")
 
@@ -92,11 +59,11 @@ def generate_translate2d(param):
     border_value = param['border_value']
     shift = np.array(param['shift'])
 
-    matrix = np.linalg.inv(matrix_translate(shift))
+    matrix = np.linalg.inv(util.matrix_translate(shift))
 
     tests = param['tests']
     for i in tests:
-        expected = compute_expected(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
+        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
         util.save_mrc(tests[i]['expected'], expected)
     print("\t-- Generated: translate")
 
@@ -109,15 +76,15 @@ def generate_apply2d(param):
     rotate = param['rotate']
     shift = np.array(param['shift'])
 
-    matrix = np.linalg.inv(matrix_translate(shift) @
-                           matrix_translate(center) @
-                           matrix_rotate(rotate) @
-                           matrix_scale(scale) @
-                           matrix_translate(-center))
+    matrix = np.linalg.inv(util.matrix_translate(shift) @
+                           util.matrix_translate(center) @
+                           util.matrix_rotate(rotate) @
+                           util.matrix_scale(scale) @
+                           util.matrix_translate(-center))
 
     tests = param['tests']
     for i in tests:
-        expected = compute_expected(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
+        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
         util.save_mrc(tests[i]['expected'], expected)
     print("\t-- Generated: apply")
 
@@ -134,4 +101,4 @@ if __name__ == '__main__':
     generate_rotate2d(parameters['rotate2D'])
     generate_scale2d(parameters['scale2D'])
     generate_translate2d(parameters['shift2D'])
-    generate_apply2d(parameters['apply2D'])
+    generate_apply2d(parameters['transform2D'])
