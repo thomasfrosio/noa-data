@@ -1,0 +1,4 @@
+euler2matrix:
+  angles: [-30, 65, 25]
+  axes: [ "ZYZ", "ZXZ", "ZYX", "ZXY", "XYZ", "XYX", "XZX", "XZY", "YXY", "YXZ", "YZX", "YZY" ]
+  file: tmp_euler_angles.mrc  # shape: [48,1,3,3]

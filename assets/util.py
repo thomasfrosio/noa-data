@@ -113,7 +113,7 @@ def matrix_rotate(angle_deg):
                          [0, 0, 1]])
     elif len(angle_deg) == 3:
         # ZYZ intrinsic
-        return rot_z(angle_deg[2]) @ rot_y(angle_deg[1]) @ rot_z(angle_deg[0])
+        return rot_z(angle_deg[0]) @ rot_y(angle_deg[1]) @ rot_z(angle_deg[2])
     else:
         raise RuntimeError
 
