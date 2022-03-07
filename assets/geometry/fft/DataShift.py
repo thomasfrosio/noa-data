@@ -3,23 +3,40 @@ from assets import util
 
 
 def generate_assets(param):
-    # Generate input. Save the input in the non-redundant non-centered format.
-    shape = param['shape']
-    img = np.linspace(1, 2, np.prod(shape), dtype=np.complex64).reshape(np.flip(shape))
-    half_size = img.shape[-1] // 2 + 1
-    half = np.fft.ifftshift(img)
-    half = half[..., :half_size]
-    util.save_mrc(param['input'], half)
+    for i in param:
+        shape = param[i]['shape']
+        if shape[1] == 1:
+            ndim = 2
+        else:
+            ndim = 3
+        shape = shape[-ndim::]
+        half_size = shape[-1] // 2 + 1
 
-    # Get the redundant centered shifts.
-    shifts = util.fft_get_phase_shift(param['shape'], param['shift'])
-    img = img * shifts
+        # Get the redundant centered shifts.
+        shifts = util.fft_get_phase_shift(shape, param[i]['shift'])
 
-    # Go from redundant centered to non-redundant non-centered.
-    half = img.shape[-1] // 2 + 1
-    img = np.fft.ifftshift(img)
-    img = img[..., :half]
-    util.save_mrc(param['output'], img)
+        cutoff = param[i]['cutoff']
+        if cutoff < np.sqrt(0.5):
+            mask = util.fft_get_mask_cutoff(shape, param[i]['cutoff'])
+            shifts[mask == 0] = complex(1, 0)
+
+        input_path = param[i]['input']
+        if len(input_path) == 0:
+            half = np.fft.ifftshift(shifts)
+            half = half[..., :half_size]
+            util.save_mrc(param[i]['output'], np.squeeze(half))
+        else:
+            # Generate input. Save the input in the non-redundant non-centered format.
+            img = (np.linspace(-3, 3, np.prod(shape), dtype=np.float32) +
+                   1j * np.linspace(-4, 2, np.prod(shape), dtype=np.float32)).reshape(shape)
+            half = np.fft.ifftshift(img)
+            half = half[..., :half_size]
+            util.save_mrc(input_path, np.squeeze(half))
+
+            img = img * shifts
+            half = np.fft.ifftshift(img)
+            half = half[..., :half_size]
+            util.save_mrc(param[i]['output'], np.squeeze(half))
 
 
 if __name__ == '__main__':

@@ -172,20 +172,20 @@ def fft_get_phase_shift(shape, shift):
     :return: Phase shifts for redundant centered FFTs
     """
     if np.size(shape) == 2:
-        x, y = (np.arange(shape[1], dtype=np.float32) - shape[1] // 2,  # -5 -4 -3 -2 -1 0 1 2 3 4
-                np.arange(shape[0], dtype=np.float32) - shape[0] // 2)
+        x, y = (np.arange(shape[-1], dtype=np.float32) - shape[-1] // 2,  # -5 -4 -3 -2 -1 0 1 2 3 4
+                np.arange(shape[-2], dtype=np.float32) - shape[-2] // 2)
         gx, gy = np.meshgrid(x, y)
-        factors = -2 * np.pi * (shift[1] * gx / shape[1] +
-                                shift[0] * gy / shape[0])
+        factors = -2 * np.pi * (shift[-1] * gx / shape[-1] +
+                                shift[-2] * gy / shape[-2])
 
     elif np.size(shape) == 3:
-        x, y, z = (np.reshape(np.arange(shape[2], dtype=np.float32) - shape[2] // 2, (1, 1, -1)),
-                   np.reshape(np.arange(shape[1], dtype=np.float32) - shape[1] // 2, (1, -1, 1)),
-                   np.reshape(np.arange(shape[0], dtype=np.float32) - shape[0] // 2, (-1, 1, 1)))
+        x, y, z = (np.reshape(np.arange(shape[-1], dtype=np.float32) - shape[-1] // 2, (1, 1, -1)),
+                   np.reshape(np.arange(shape[-2], dtype=np.float32) - shape[-2] // 2, (1, -1, 1)),
+                   np.reshape(np.arange(shape[-3], dtype=np.float32) - shape[-3] // 2, (-1, 1, 1)))
         gz, gy, gx = np.meshgrid(z, y, x, indexing='ij')
-        factors = -2 * np.pi * (shift[1] * gx / shape[1] +
-                                shift[1] * gy / shape[1] +
-                                shift[0] * gz / shape[0])
+        factors = -2 * np.pi * (shift[2] * gx / shape[-1] +
+                                shift[1] * gy / shape[-2] +
+                                shift[0] * gz / shape[-3])
     else:
         raise RuntimeError
     return np.cos(factors) + 1j * np.sin(factors)

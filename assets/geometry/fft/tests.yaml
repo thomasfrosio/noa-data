@@ -3,9 +3,9 @@ apply2D:
     # There's a bug/limitation in the C++ implementation for non-redundant FFTs.
     # The workaround is to low-pass filter the real-valued Nyquist on even sizes.
     - name: &input2D_0 tmp_apply2D_input_00.mrc
-      shape: [ 256,256 ]
+      shape: [ 1,1,256,256 ]
     - name: &input2D_1 tmp_apply2D_input_01.mrc
-      shape: [ 255,513 ]
+      shape: [ 1,1,255,395 ]
 
   tests: # scale, rotate, then shift
     # squares
@@ -43,7 +43,7 @@ apply2D:
       expected: tmp_apply2D_10.mrc
       scale: [ 0.9,1.1 ]
       rotate: 30 # deg
-      center: [ 127,256 ]
+      center: [ 127,197 ]
       shift: [ 0,0 ]
       cutoff: 0.5
       interp: INTERP_LINEAR
@@ -52,7 +52,7 @@ apply2D:
       expected: tmp_apply2D_11.mrc
       scale: [ 1,1 ]
       rotate: 45 # deg
-      center: [ 127,256 ]
+      center: [ 127,197 ]
       shift: [ -30,30 ]
       cutoff: 0.5
       interp: INTERP_LINEAR
@@ -61,7 +61,7 @@ apply2D:
       expected: tmp_apply2D_12.mrc
       scale: [ 1,1.5 ]
       rotate: -45 # deg
-      center: [ 97,225 ]
+      center: [ 97,180 ]
       shift: [ 0,30 ]
       cutoff: 0.5
       interp: INTERP_LINEAR
@@ -69,9 +69,9 @@ apply2D:
 apply3D:
   inputs:
     - name: &input3D_0 tmp_apply3D_input_00.mrc
-      shape: [ 160,160,160 ]
+      shape: [ 1,160,160,160 ]
     - name: &input3D_1 tmp_apply3D_input_01.mrc
-      shape: [ 321,160,161 ]
+      shape: [ 1,161,160,321 ]
 
   tests: # scale, rotate, then shift
     0:
@@ -107,7 +107,7 @@ apply3D:
       expected: tmp_apply3D_10.mrc
       scale: [ 1,1,1 ]
       rotate: [ 30,0,0 ] # ZYZ intrinsic deg
-      center: [ 160,80,80 ]
+      center: [ 80,80,160 ]
       shift: [ 0,0,0 ]
       cutoff: 0.5
       interp: INTERP_LINEAR
@@ -116,7 +116,7 @@ apply3D:
       expected: tmp_apply3D_11.mrc
       scale: [ 1,1,1 ]
       rotate: [ 45,0,0 ] # ZYZ intrinsic deg
-      center: [ 160,80,80 ]
+      center: [ 80,80,160 ]
       shift: [ -40,20,0 ]
       cutoff: 0.5
       interp: INTERP_LINEAR
@@ -125,7 +125,7 @@ apply3D:
       expected: tmp_apply3D_12.mrc
       scale: [ 1.5,1,1 ]
       rotate: [ -30,0,0 ] # ZYZ intrinsic deg
-      center: [ 128,65,65 ]
+      center: [ 65,65,128 ]
       shift: [ 0,25,0 ]
       cutoff: 0.5
       interp: INTERP_LINEAR
@@ -146,13 +146,29 @@ apply2D_sym:
 
 shift:
   2D:
-    shape: [ 64,71 ]
-    shift: [ -32,25 ]
-    input: tmp_shift2D_input.mrc
-    output: tmp_shift2D_00.mrc
+    0:
+      shape: [ 1,1,64,71 ]
+      shift: [ -32,25 ]
+      cutoff: 0.5
+      input: tmp_shift2D_input.mrc
+      output: tmp_shift2D_00.mrc
+    1:
+      shape: [ 1,1,125,126 ]
+      shift: [ 12.75,-32.51 ]
+      cutoff: 1
+      input: ""
+      output: tmp_shift2D_01.mrc
 
   3D:
-    shape: [ 64,71,68 ]
-    shift: [ -32,25,33 ]
-    input: tmp_shift3D_input.mrc
-    output: tmp_shift3D_00.mrc
+    0:
+      shape: [ 1,64,71,68 ]
+      shift: [ -11.1,2.3,5.4 ]
+      cutoff: 1
+      input: tmp_shift3D_input.mrc
+      output: tmp_shift3D_00.mrc
+    1:
+      shape: [ 1,64,72,65 ]
+      shift: [ 6.5,3.4,-3 ]
+      cutoff: 1
+      input: ""
+      output: tmp_shift3D_01.mrc
