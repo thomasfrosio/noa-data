@@ -27,7 +27,12 @@ def generate_input(inputs):
     img_3d = mask_hanning(np.linspace(-1, 1, n ** 3, dtype=np.float32).reshape((n, n, n)))
 
     for entry in inputs:
-        shape = np.flip(entry['shape'])
+        shape = np.asarray(entry['shape'])
+        if shape[1] == 1:
+            ndim = 2
+        else:
+            ndim = 3
+        shape = shape[-ndim::]
         center = shape // 2
         left = center - n // 2
         right = shape - n - left
@@ -37,9 +42,9 @@ def generate_input(inputs):
             out = np.pad(img_3d, [(left[0], right[0]), (left[1], right[1]), (left[2], right[2])])
 
         # FIXME I didn't find a better solution than to mask the last real-valued Nyquist...
-        if not shape[0] % 2:
+        if not shape[-1] % 2:
             out = np.fft.fftshift(np.fft.fftn(out))
-            out *= util.fft_get_mask_cutoff(shape, ((shape[0] - shape[0] // 2) - 1) / shape[0])
+            out *= util.fft_get_mask_cutoff(shape, ((shape[-1] - shape[-1] // 2) - 1) / shape[-1])
             out = np.real(np.fft.ifftn(np.fft.fftshift(out)))
 
         util.save_mrc(entry['name'], out)
@@ -48,7 +53,12 @@ def generate_input(inputs):
 def apply_affine(dft, scale, angle):
     # dft should be centered (fftshifted).
     # First, scale to normalize the coordinate system.
-    shape = np.flip(np.array(dft.shape, dtype=float)) // 2 * 2
+    shape = np.array(dft.shape, dtype=float) // 2 * 2
+    if shape[1] == 1:
+        ndim = 2
+    else:
+        ndim = 3
+    shape = shape[-ndim::]
     idx_dc = shape // 2
 
     # Place DC at 0, normalize frequencies, apply scaling and rotation,
@@ -66,14 +76,14 @@ def apply_affine(dft, scale, angle):
 def apply(img, scale, angle, center, shift, cutoff):
     """
     :param img: image, with [(z,)y,x] shape, to transform
-    :param scale: [x,y(,z)] scale
+    :param scale: [(z,)y,x] scale
     :param angle: rotation angle or ZYZ intrinsic euler angles, in degrees
-    :param center: [x,y(,z)] scaling/rotation center
-    :param shift: [x,y(,z)] shift
+    :param center: [(z,)y,x] scaling/rotation center
+    :param shift: [(z,)y,x] shift
     :param cutoff: output frequency cutoff, in cycle/pix
     :return: Scaled, rotated and shifted (in that order) image.
     """
-    shape = np.flip(img.shape)
+    shape = img.shape
     dft = np.fft.fftshift(np.fft.fftn(img, norm='ortho'))
     dft = dft * util.fft_get_phase_shift(shape, -np.array(center))
     dft_rotate = apply_affine(dft, scale, angle)
@@ -86,7 +96,7 @@ def apply(img, scale, angle, center, shift, cutoff):
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    for key in ['apply2D', 'apply3D']:
+    for key in ['transform2D', 'transform3D']:
         parameters = util.load_yaml('tests.yaml')[key]
         generate_input(parameters['inputs'])
 
