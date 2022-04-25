@@ -113,6 +113,12 @@ shift:
       cutoff: 1
       input: ""
       output: tmp_shift2D_01.mrc
+    2:
+      shape: [ 1,1,64,128 ]
+      shift: [ 32,64 ]
+      cutoff: 0.8
+      input: ""
+      output: tmp_shift2D_02.mrc
 
   3D:
     0:
@@ -127,3 +133,9 @@ shift:
       cutoff: 1
       input: ""
       output: tmp_shift3D_01.mrc
+    2:
+      shape: [ 1,64,64,131 ]
+      shift: [ 32,32,65.5 ]
+      cutoff: 1
+      input: ""
+      output: tmp_shift3D_02.mrc
