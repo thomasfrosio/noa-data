@@ -1,0 +1,288 @@
+convolve:
+  inputs:
+    2D:
+      shape: [ 1,1,250,251 ]
+      path: &convolve_input2D tmp_conv_2D.mrc
+    3D:
+      shape: [ 1,150,151,152 ]
+      path: &convolve_input3D tmp_conv_3D.mrc
+  filters:
+    0:
+      shape: [ 31 ]
+      sigma: 5
+      path: &filter1D tmp_conv_filter1D.mrc
+    1:
+      shape: [ 9, 17 ]
+      sigma: 3
+      path: &filter2D tmp_conv_filter2D.mrc
+    2:
+      shape: [ 3,3,3 ]
+      sigma: 2
+      path: &filter3D_0 tmp_conv_filter3D_0.mrc
+    3:
+      shape: [ 5,5,5 ]
+      sigma: 1
+      path: &filter3D_1 tmp_conv_filter3D_1.mrc
+    4:
+      shape: [ 5,3,3 ]
+      sigma: 1
+      path: &filter3D_2 tmp_conv_filter3D_2.mrc
+  tests:
+    0:
+      input: *convolve_input2D
+      filter: *filter1D
+      expected: tmp_conv_0.mrc
+    1:
+      input: *convolve_input3D
+      filter: *filter1D
+      expected: tmp_conv_1.mrc
+    2:
+      input: *convolve_input2D
+      filter: *filter2D
+      expected: tmp_conv_2.mrc
+    3:
+      input: *convolve_input3D
+      filter: *filter2D
+      expected: tmp_conv_3.mrc
+    4:
+      input: *convolve_input3D
+      filter: *filter3D_0
+      expected: tmp_conv_4.mrc
+    5:
+      input: *convolve_input3D
+      filter: *filter3D_1
+      expected: tmp_conv_5.mrc
+    6:
+      input: *convolve_input3D
+      filter: *filter3D_2
+      expected: tmp_conv_6.mrc
+
+convolve_separable:
+  filter:
+    size: 21
+    sigma: 4
+    path: &filter tmp_conv_separable_filter.mrc
+  tests:
+    0:
+      input: *convolve_input2D
+      filter: *filter
+      dim: [ 0, 1 ]
+      expected: tmp_conv_separable_0.mrc
+    1:
+      input: *convolve_input2D
+      filter: *filter
+      dim: [ 0 ]
+      expected: tmp_conv_separable_1.mrc
+    2:
+      input: *convolve_input2D
+      filter: *filter
+      dim: [ 1 ]
+      expected: tmp_conv_separable_2.mrc
+    3:
+      input: *convolve_input3D
+      filter: *filter
+      dim: [ 0,1,2 ]
+      expected: tmp_conv_separable_3.mrc
+    4:
+      input: *convolve_input3D
+      filter: *filter
+      dim: [ 0,1 ]
+      expected: tmp_conv_separable_4.mrc
+    5:
+      input: *convolve_input3D
+      filter: *filter
+      dim: [ 1,2 ]
+      expected: tmp_conv_separable_5.mrc
+    6:
+      input: *convolve_input3D
+      filter: *filter
+      dim: [ 0,2 ]
+      expected: tmp_conv_separable_6.mrc
+    7:
+      input: *convolve_input3D
+      filter: *filter
+      dim: [ 0 ]
+      expected: tmp_conv_separable_7.mrc
+    8:
+      input: *convolve_input3D
+      filter: *filter
+      dim: [ 1 ]
+      expected: tmp_conv_separable_8.mrc
+    9:
+      input: *convolve_input3D
+      filter: *filter
+      dim: [ 2 ]
+      expected: tmp_conv_separable_9.mrc
+
+median:
+  inputs:
+    2D:
+      shape: [ 1,1,250,250 ]
+      path: &medfilt_input2D tmp_medfilt_2D.mrc
+    3D:
+      shape: [ 1,150,150,150 ]
+      path: &medfilt_input3D tmp_medfilt_3D.mrc
+  tests:
+    0:
+      input: *medfilt_input2D
+      window: 3
+      dim: 1
+      border: BORDER_REFLECT
+      expected: tmp_medfilt_00.mrc
+    1:
+      input: *medfilt_input2D
+      window: 5
+      dim: 1
+      border: BORDER_ZERO
+      expected: tmp_medfilt_01.mrc
+    2:
+      input: *medfilt_input3D
+      window: 7
+      dim: 1
+      border: BORDER_REFLECT
+      expected: tmp_medfilt_02.mrc
+    3:
+      input: *medfilt_input3D
+      window: 9
+      dim: 1
+      border: BORDER_ZERO
+      expected: tmp_medfilt_03.mrc
+    4:
+      input: *medfilt_input2D
+      window: 11
+      dim: 2
+      border: BORDER_REFLECT
+      expected: tmp_medfilt_04.mrc
+    5:
+      input: *medfilt_input2D
+      window: 9
+      dim: 2
+      border: BORDER_ZERO
+      expected: tmp_medfilt_05.mrc
+    6:
+      input: *medfilt_input3D
+      window: 7
+      dim: 2
+      border: BORDER_REFLECT
+      expected: tmp_medfilt_06.mrc
+    7:
+      input: *medfilt_input3D
+      window: 3
+      dim: 2
+      border: BORDER_ZERO
+      expected: tmp_medfilt_07.mrc
+    8:
+      input: *medfilt_input3D
+      window: 5
+      dim: 3
+      border: BORDER_REFLECT
+      expected: tmp_medfilt_08.mrc
+    9:
+      input: *medfilt_input3D
+      window: 3
+      dim: 3
+      border: BORDER_ZERO
+      expected: tmp_medfilt_09.mrc
+
+sphere:
+  tests:
+    0:
+      invert: true
+      shape: [ 1,1,128,128 ]
+      center: [ 0,64,64 ]
+      radius: 40
+      taper: 0
+      expected: sphere_00.mrc
+    1:
+      invert: true
+      shape: [ 1,1,128,128 ]
+      center: [ 0,64,64 ]
+      radius: 41
+      taper: 0
+      expected: sphere_01.mrc
+    2:
+      invert: true
+      shape: [ 1,1,256,256 ]
+      center: [ 0,128,1 ]
+      radius: 108
+      taper: 19
+      expected: sphere_02.mrc
+    3:
+      invert: true
+      shape: [ 1,100,100,100 ]
+      center: [ 30,50,70 ]
+      radius: 30
+      taper: 0
+      expected: sphere_03.mrc
+    4:
+      invert: true
+      shape: [ 1,100,100,100 ]
+      center: [ 30,50,70 ]
+      radius: 20
+      taper: 10
+      expected: sphere_04.mrc
+
+rectangle:
+  tests:
+    0:
+      invert: false
+      shape: [ 1,1,512,512 ]
+      center: [ 0,256,256 ]
+      radius: [ 1,51,50 ]
+      taper: 0
+      expected: rectangle_00.mrc
+    1:
+      invert: false
+      shape: [ 1,1,230,231 ]
+      center: [ 0,126,104 ]
+      radius: [ 1,51,50 ]
+      taper: 0
+      expected: rectangle_01.mrc
+    2:
+      invert: false
+      shape: [ 1,1,256,128 ]
+      center: [ 0,138,76 ]
+      radius: [ 1,80,30 ]
+      taper: 10
+      expected: rectangle_02.mrc
+    3:
+      invert: false
+      shape: [ 1,64,128,128 ]
+      center: [ 32,64,84 ]
+      radius: [ 5,80,30 ]
+      taper: 10
+      expected: rectangle_03.mrc
+    4:
+      invert: false
+      shape: [ 1,64,64,64 ]
+      center: [ 32,22,32 ]
+      radius: [ 15,10,10 ]
+      taper: 15
+      expected: rectangle_04.mrc
+
+cylinder:
+  tests:
+    0:
+      invert: false
+      shape: [ 1,64,256,256 ]
+      center: [ 32,128,128 ]
+      radius: 60
+      length: 20
+      taper: 0
+      expected: cylinder_00.mrc
+    1:
+      invert: false
+      shape: [ 1,128,128,128 ]
+      center: [ 64,75,53 ]
+      radius: 31
+      length: 45
+      taper: 11
+      expected: cylinder_01.mrc
+    2:
+      invert: false
+      shape: [ 1,180,91,80 ]
+      center: [ 100,45,34 ]
+      radius: 10
+      length: 50
+      taper: 6
+      expected: cylinder_02.mrc
