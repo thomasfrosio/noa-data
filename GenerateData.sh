@@ -12,7 +12,7 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 # Ensure minimum python version:
-if python -c 'import sys; sys.exit(sys.version_info[:3] <= (3,8,10))' > /dev/null ; then
+if python -c 'import sys; sys.exit(sys.version_info[:2] >= (3,8))' > /dev/null ; then
   >&2 echo -e "${RED}ERROR: \"python\" should point to python3.8 or newer${NC}"
   exit 1
 fi
