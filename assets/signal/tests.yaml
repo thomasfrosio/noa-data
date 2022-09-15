@@ -286,3 +286,48 @@ cylinder:
       length: 50
       taper: 6
       expected: cylinder_02.mrc
+
+ellipse:
+  tests:
+    0:
+      invert: false
+      shape: [ 1,1,128,128 ]
+      center: [ 0,64,64 ]
+      radius: [ 1,55,64 ]
+      taper: 0
+      expected: ellipse_00.mrc
+    1:
+      invert: true
+      shape: [ 1,1,128,156 ]
+      center: [ 0,64,64 ]
+      radius: [ 1,30,48 ]
+      taper: 0
+      expected: ellipse_01.mrc
+    2:
+      invert: false
+      shape: [ 1,1,256,256 ]
+      center: [ 0,128,1 ]
+      radius: [ 1,128,65 ]
+      taper: 19
+      expected: ellipse_02.mrc
+    3:
+      invert: true
+      shape: [ 1,1,256,256 ]
+      center: [ 0,129,120 ]
+      radius: [ 1,100,32 ]
+      taper: 6
+      expected: ellipse_03.mrc
+    4:
+      invert: true
+      shape: [ 1,100,85,105 ]
+      center: [ 30,50,70 ]
+      radius: [ 30,35,25 ]
+      taper: 0
+      expected: ellipse_04.mrc
+    5:
+      invert: true
+      shape: [ 1,100,98,99 ]
+      center: [ 30,50,70 ]
+      radius: [ 20,32,15 ]
+      taper: 10
+      expected: ellipse_05.mrc
