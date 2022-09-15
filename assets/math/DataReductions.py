@@ -19,6 +19,7 @@ def generate_all(param):
     data = util.load_mrc(param['input']['path'])
     results = {'min': float(np.min(data)),
                'max': float(np.max(data)),
+               'median': float(np.median(data)),
                'sum': float(np.sum(data.astype(np.double))),
                'mean': float(np.mean(data.astype(np.double))),
                'var': float(np.var(data.astype(np.double))),

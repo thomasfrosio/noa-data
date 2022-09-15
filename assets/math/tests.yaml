@@ -45,3 +45,48 @@ reduce_complex:
   shape: [ 10,64,64,64 ]
   input_path: tmp_stats_input_complex.mrc
   output_path: tmp_stats_output_complex_all.yaml
+
+
+sort:
+  input_filename_1d: &input_1d tmp_sort_input_1d.mrc
+  shape_1d: &shape_1d [1,1,2,4096] # 2D for mrcfile, but ignore second row
+  input_filename_4d: &input_4d tmp_sort_input_4d.mrc
+  shape_4d: &shape_4d [11,21,31,41]
+
+  tests:
+    0:
+      input: *input_1d
+      output: tmp_sort_output_0.mrc
+      shape: *shape_1d
+      ascending: true
+      axis: -1
+    1:
+      input: *input_1d
+      output: tmp_sort_output_1.mrc
+      shape: *shape_1d
+      ascending: false
+      axis: -1
+    2:
+      input: *input_4d
+      output: tmp_sort_output_2.mrc
+      shape: *shape_4d
+      ascending: true
+      axis: 0
+    3:
+      input: *input_4d
+      output: tmp_sort_output_3.mrc
+      shape: *shape_4d
+      ascending: true
+      axis: 1
+    4:
+      input: *input_4d
+      output: tmp_sort_output_4.mrc
+      shape: *shape_4d
+      ascending: true
+      axis: 2
+    5:
+      input: *input_4d
+      output: tmp_sort_output_5.mrc
+      shape: *shape_4d
+      ascending: true
+      axis: 3
