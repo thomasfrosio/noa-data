@@ -185,79 +185,91 @@ median:
       expected: tmp_medfilt_09.mrc
 
 sphere:
-  tests:
+  tests2D:
     0:
       invert: true
       shape: [ 1,1,128,128 ]
-      center: [ 0,64,64 ]
+      center: [ 64,64 ]
       radius: 40
       taper: 0
+      angle: 0
       expected: sphere_00.mrc
     1:
       invert: true
       shape: [ 1,1,128,128 ]
-      center: [ 0,64,64 ]
+      center: [ 64,64 ]
       radius: 41
       taper: 0
+      angle: 0
       expected: sphere_01.mrc
     2:
       invert: true
       shape: [ 1,1,256,256 ]
-      center: [ 0,128,1 ]
+      center: [ 128,1 ]
       radius: 108
       taper: 19
+      angle: 0
       expected: sphere_02.mrc
-    3:
+  test3D:
+    0:
       invert: true
       shape: [ 1,100,100,100 ]
       center: [ 30,50,70 ]
       radius: 30
       taper: 0
+      angles: [0,0,0]
       expected: sphere_03.mrc
-    4:
+    1:
       invert: true
       shape: [ 1,100,100,100 ]
       center: [ 30,50,70 ]
       radius: 20
       taper: 10
+      angles: [0,0,0]
       expected: sphere_04.mrc
 
 rectangle:
-  tests:
+  tests2D:
     0:
       invert: false
       shape: [ 1,1,512,512 ]
-      center: [ 0,256,256 ]
-      radius: [ 1,51,50 ]
+      center: [ 256,256 ]
+      radius: [ 51,50 ]
       taper: 0
+      angle: 0
       expected: rectangle_00.mrc
     1:
       invert: false
       shape: [ 1,1,230,231 ]
-      center: [ 0,126,104 ]
-      radius: [ 1,51,50 ]
+      center: [ 126,104 ]
+      radius: [ 51,50 ]
       taper: 0
+      angle: 0
       expected: rectangle_01.mrc
     2:
       invert: false
       shape: [ 1,1,256,128 ]
-      center: [ 0,138,76 ]
-      radius: [ 1,80,30 ]
+      center: [ 138,76 ]
+      radius: [ 80,30 ]
       taper: 10
+      angle: 0
       expected: rectangle_02.mrc
-    3:
+  tests3D:
+    0:
       invert: false
       shape: [ 1,64,128,128 ]
       center: [ 32,64,84 ]
       radius: [ 5,80,30 ]
       taper: 10
+      angles: [0,0,0]
       expected: rectangle_03.mrc
-    4:
+    1:
       invert: false
       shape: [ 1,64,64,64 ]
       center: [ 32,22,32 ]
       radius: [ 15,10,10 ]
       taper: 15
+      angles: [0,0,0]
       expected: rectangle_04.mrc
 
 cylinder:
@@ -288,46 +300,53 @@ cylinder:
       expected: cylinder_02.mrc
 
 ellipse:
-  tests:
+  tests2D:
     0:
       invert: false
       shape: [ 1,1,128,128 ]
-      center: [ 0,64,64 ]
-      radius: [ 1,55,64 ]
+      center: [ 64,64 ]
+      radius: [ 55,64 ]
       taper: 0
+      angle: 0
       expected: ellipse_00.mrc
     1:
       invert: true
       shape: [ 1,1,128,156 ]
-      center: [ 0,64,64 ]
-      radius: [ 1,30,48 ]
+      center: [ 64,64 ]
+      radius: [ 30,48 ]
       taper: 0
+      angle: 0
       expected: ellipse_01.mrc
     2:
       invert: false
       shape: [ 1,1,256,256 ]
-      center: [ 0,128,1 ]
-      radius: [ 1,128,65 ]
+      center: [ 128,1 ]
+      radius: [ 128,65 ]
       taper: 19
+      angle: 0
       expected: ellipse_02.mrc
     3:
       invert: true
       shape: [ 1,1,256,256 ]
-      center: [ 0,129,120 ]
-      radius: [ 1,100,32 ]
+      center: [ 129,120 ]
+      radius: [ 100,32 ]
       taper: 6
+      angle: 0
       expected: ellipse_03.mrc
-    4:
+  tests3D:
+    0:
       invert: true
       shape: [ 1,100,85,105 ]
       center: [ 30,50,70 ]
       radius: [ 30,35,25 ]
       taper: 0
+      angles: [0,0,0]
       expected: ellipse_04.mrc
-    5:
+    1:
       invert: true
       shape: [ 1,100,98,99 ]
       center: [ 30,50,70 ]
       radius: [ 20,32,15 ]
       taper: 10
+      angles: [0,0,0]
       expected: ellipse_05.mrc
