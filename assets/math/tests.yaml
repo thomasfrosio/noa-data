@@ -1,12 +1,12 @@
 reduce_to_stats:
   input:
-    shape: [10,64,64,64]
+    shape: [ 10,64,64,64 ]
     path: tmp_stats_input.mrc
   all:
-    output_shape: [1,1,1,1]
+    output_shape: [ 1,1,1,1 ]
     output_path: tmp_stats_output_all.yaml
   batch:
-    output_shape: [10,1,1,1]
+    output_shape: [ 10,1,1,1 ]
     output_path: tmp_stats_output_batch.yaml
   axis0:
     output_shape: [ 1,64,64,64 ]
@@ -46,12 +46,11 @@ reduce_complex:
   input_path: tmp_stats_input_complex.mrc
   output_path: tmp_stats_output_complex_all.yaml
 
-
 sort:
   input_filename_1d: &input_1d tmp_sort_input_1d.mrc
-  shape_1d: &shape_1d [1,1,2,4096] # 2D for mrcfile, but ignore second row
+  shape_1d: &shape_1d [ 1,1,2,4096 ] # 2D for mrcfile, but ignore second row
   input_filename_4d: &input_4d tmp_sort_input_4d.mrc
-  shape_4d: &shape_4d [11,21,31,41]
+  shape_4d: &shape_4d [ 11,21,31,41 ]
 
   tests:
     0:
@@ -90,3 +89,8 @@ sort:
       shape: *shape_4d
       ascending: true
       axis: 3
+
+surface:
+  input: surface_input.mrc
+  solution: tmp_surface_solution.yaml
+  prefix_surface: tmp_surface_subtract_order

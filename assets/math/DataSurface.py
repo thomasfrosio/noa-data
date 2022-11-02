@@ -34,16 +34,18 @@ def fit_surface(image, order):
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    image = np.asarray(util.load_mrc("surface_input.mrc").copy(), dtype=np.float32)
+    test_file = util.load_yaml('tests.yaml')['surface']
+
+    image = np.asarray(util.load_mrc(test_file['input']).copy(), dtype=np.float32)
     solutions = {}
     for i in range(1, 4):
-        solution, image_subtract = fit_surface(image, i)
-        util.save_mrc(f"tmp_surface_subtract_order{i}.mrc", image_subtract)
+        solution, image_subtracted = fit_surface(image, i)
+        util.save_mrc(f"{test_file['prefix_surface']}{i}.mrc", image_subtracted)
 
         parameters = {}
         for p, v in enumerate(solution):
             parameters[p] = float(v)
         solutions[i] = parameters
 
-    util.save_yaml("tmp_surface_solution.yaml", solutions)
+    util.save_yaml(test_file['solution'], solutions)
     print("\t-- Generated: surface fit")
