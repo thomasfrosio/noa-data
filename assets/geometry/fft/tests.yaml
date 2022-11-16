@@ -129,3 +129,97 @@ transform3D:
       shift: [ 0,25,0 ]
       cutoff: 0.5
       interp: INTERP_LINEAR
+
+insert3D_rasterisation:
+  tests:
+    0:
+      slice_shape: [ 5,1,128,128 ]
+      grid_shape: [ 1,100,256,256 ]
+      target_shape: [ 1,256,256,256 ]
+      scale: 1
+      rotate: [ 0,3,-3,6,-6 ] # tilt Y
+      cutoff: 0.5
+      ews_radius: 0
+      grid_filename: insert3D_rasterisation_grid0.mrc
+    1:
+      slice_shape: [ 10,1,128,128 ]
+      grid_shape: [ 1,128,128,128 ]
+      target_shape: [ 0,256,256,256 ]
+      scale: 1
+      rotate: [ 0,2,4,6,8,10,12,14,16,18 ] # tilt Y
+      cutoff: 0.4
+      ews_radius: 0
+      grid_filename: insert3D_rasterisation_grid1.mrc
+    2:
+      slice_shape: [ 1,1,512,512 ]
+      grid_shape: [ 1,10,512,512 ]
+      target_shape: [ 1,512,512,512 ]
+      scale: 1
+      rotate: [ 0 ] # tilt Y
+      cutoff: 0.5
+      ews_radius: 50 # 1/0.02
+      grid_filename: insert3D_rasterisation_grid2.mrc
+
+insert3D_interpolation:
+  tests:
+    0:
+      slice_shape: [ 5,1,128,128 ]
+      grid_shape: [ 1,100,256,256 ]
+      target_shape: [ 1,256,256,256 ]
+      scale: 1
+      rotate: [ 0,3,-3,6,-6 ] # tilt Y
+      cutoff: 0.5
+      ews_radius: 0
+      slice_z_radius: 0.02
+      grid_filename: insert3D_interp_grid0.mrc
+    1:
+      slice_shape: [ 10,1,128,128 ]
+      grid_shape: [ 1,128,128,128 ]
+      target_shape: [ 0,256,256,256 ]
+      scale: 1
+      rotate: [ 0,2,4,6,8,10,12,14,16,18 ] # tilt Y
+      cutoff: 0.4
+      ews_radius: 0
+      slice_z_radius: 0.003
+      grid_filename: insert3D_interp_grid1.mrc
+    2:
+      slice_shape: [ 1,1,512,512 ]
+      grid_shape: [ 1,10,512,512 ]
+      target_shape: [ 1,512,512,512 ]
+      scale: 1
+      rotate: [ 0 ] # tilt Y
+      cutoff: 0.5
+      ews_radius: 50 # 1/0.02
+      slice_z_radius: 0.003
+      grid_filename: insert3D_interp_grid2.mrc
+
+extract3D_from_grid:
+  grid_shape: [ 1,128,128,128 ]
+  grid_filename: extract3D_input_grid.mrc
+  tests:
+    0:
+      slice_shape: [ 9,1,128,128 ]
+      scale: 1
+      rotate: [ -60,-40,-20,-10,0,10,20,40,60 ] # tilt Y
+      cutoff: 0.5
+      ews_radius: 0
+      slice_filename: extract3D_slice0.mrc
+    1:
+      slice_shape: [ 9,1,64,64 ]
+      scale: 1
+      rotate: [ -60,-40,-20,-10,0,10,20,40,60 ] # tilt Y
+      cutoff: 0.5
+      ews_radius: 0
+      slice_filename: extract3D_slice1.mrc
+
+extract3D_from_slices:
+  tests:
+    0:
+      input_slice_shape: [ 4,1,512,512 ]
+      output_slice_shape: [ 3,1,512,512 ]
+      input_rotate: [ -6,-3,3,6 ] # tilt Y
+      output_rotate: [ -9, 0, 9 ] # tilt Y
+      cutoff: 0.5
+      ews_radius: 0
+      slice_z_radius: 0.05
+      output_slice_filename: extract3D_slice2.mrc
