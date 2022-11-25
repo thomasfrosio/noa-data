@@ -192,6 +192,7 @@ sphere:
       center: [ 64,64 ]
       radius: 40
       taper: 0
+      cvalue: 1
       expected: sphere_00.mrc
     1:
       invert: false
@@ -199,6 +200,7 @@ sphere:
       center: [ 64,64 ]
       radius: 41
       taper: 3
+      cvalue: 2
       expected: sphere_01.mrc
     2:
       invert: true
@@ -206,6 +208,7 @@ sphere:
       center: [ 128,1 ]
       radius: 108
       taper: 19
+      cvalue: -1
       expected: sphere_02.mrc
   test3D:
     0:
@@ -214,6 +217,7 @@ sphere:
       center: [ 30,50,70 ]
       radius: 30
       taper: 1
+      cvalue: 1
       expected: sphere_03.mrc
     1:
       invert: true
@@ -221,6 +225,7 @@ sphere:
       center: [ 30,50,70 ]
       radius: 20
       taper: 10
+      cvalue: 3
       expected: sphere_04.mrc
 
 rectangle:
@@ -232,6 +237,7 @@ rectangle:
       radius: [ 51,50 ]
       taper: 0
       angle: 0
+      cvalue: 1
       expected: rectangle_00.mrc
     1:
       invert: true
@@ -240,6 +246,7 @@ rectangle:
       radius: [ 51,50 ]
       taper: 3
       angle: 20
+      cvalue: 2
       expected: rectangle_01.mrc
     2:
       invert: false
@@ -248,6 +255,7 @@ rectangle:
       radius: [ 80,30 ]
       taper: 10
       angle: -35
+      cvalue: -1
       expected: rectangle_02.mrc
   test3D:
     0:
@@ -257,6 +265,7 @@ rectangle:
       radius: [ 8,20,30 ]
       taper: 10
       tilt: 20
+      cvalue: 1
       expected: rectangle_03.mrc
     1:
       invert: false
@@ -265,6 +274,7 @@ rectangle:
       radius: [ 15,10,10 ]
       taper: 15
       tilt: 0
+      cvalue: 1
       expected: rectangle_04.mrc
 
 cylinder:
@@ -277,6 +287,7 @@ cylinder:
       length: 20
       taper: 2
       tilt: 0
+      cvalue: 1
       expected: cylinder_00.mrc
     1:
       invert: false
@@ -286,6 +297,7 @@ cylinder:
       length: 45
       taper: 11
       tilt: 35
+      cvalue: 1
       expected: cylinder_01.mrc
     2:
       invert: false
@@ -295,6 +307,7 @@ cylinder:
       length: 29
       taper: 10
       tilt: 90
+      cvalue: 1
       expected: cylinder_02.mrc
 
 ellipse:
@@ -306,6 +319,7 @@ ellipse:
       radius: [ 55,64 ]
       taper: 1
       angle: 0
+      cvalue: 1
       expected: ellipse_00.mrc
     1:
       invert: true
@@ -314,6 +328,7 @@ ellipse:
       radius: [ 30,48 ]
       taper: 1
       angle: 45
+      cvalue: 1
       expected: ellipse_01.mrc
     2:
       invert: false
@@ -322,6 +337,7 @@ ellipse:
       radius: [ 128,65 ]
       taper: 19
       angle: 0
+      cvalue: 1
       expected: ellipse_02.mrc
     3:
       invert: true
@@ -330,6 +346,7 @@ ellipse:
       radius: [ 100,32 ]
       taper: 6
       angle: -15
+      cvalue: 1
       expected: ellipse_03.mrc
   test3D:
     0:
@@ -339,6 +356,7 @@ ellipse:
       radius: [ 30,35,25 ]
       taper: 2
       tilt: 0
+      cvalue: 1
       expected: ellipse_04.mrc
     1:
       invert: true
@@ -347,4 +365,5 @@ ellipse:
       radius: [ 5,15,25 ]
       taper: 10
       tilt: 15
+      cvalue: 1
       expected: ellipse_05.mrc
