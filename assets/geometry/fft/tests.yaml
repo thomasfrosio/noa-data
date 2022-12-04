@@ -221,5 +221,5 @@ extract3D_from_slices:
       output_rotate: [ -9, 0, 9 ] # tilt Y
       cutoff: 0.5
       ews_radius: 0
-      slice_z_radius: 0.05
+      slice_z_radius: 0.005
       output_slice_filename: extract3D_slice2.mrc
