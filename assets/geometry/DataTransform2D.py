@@ -20,73 +20,25 @@ def generate_input(filename):
     print("\t-- Generated: input")
 
 
-def generate_rotate2d(param):
+def generate_transform2d(param):
     image = util.load_mrc(param['input'])
-    border_value = param['border_value']
-    rotate = param['rotate']
-    center = np.array(param['center'])
 
-    matrix = np.linalg.inv(util.matrix_translate(center) @
-                           util.matrix_rotate(rotate) @
-                           util.matrix_translate(-center))
+    for i in param['tests']:
+        test = param['tests'][i]
+        cvalue = test['cvalue']
+        center = np.array(test['center'])
+        scale = np.array(test['scale'])
+        rotate = test['rotate']
+        shift = np.array(test['shift'])
+        matrix = np.linalg.inv(util.matrix_translate(shift) @
+                               util.matrix_translate(center) @
+                               util.matrix_rotate(rotate) @
+                               util.matrix_scale(scale) @
+                               util.matrix_translate(-center))
+        expected = util.transform_affine(image, matrix, test['interp'], test['border'], cvalue)
+        util.save_mrc(test['expected'], expected)
 
-    tests = param['tests']
-    for i in tests:
-        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
-        util.save_mrc(tests[i]['expected'], expected)
-    print("\t-- Generated: rotate")
-
-
-def generate_scale2d(param):
-    image = util.load_mrc(param['input'])
-    border_value = param['border_value']
-    scale = np.array(param['scale'])
-    center = np.array(param['center'])
-
-    matrix = np.linalg.inv(util.matrix_translate(center) @
-                           util.matrix_scale(scale) @
-                           util.matrix_translate(-center))
-
-    tests = param['tests']
-    for i in tests:
-        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
-        util.save_mrc(tests[i]['expected'], expected)
-    print("\t-- Generated: scale")
-
-
-def generate_translate2d(param):
-    image = util.load_mrc(param['input'])
-    border_value = param['border_value']
-    shift = np.array(param['shift'])
-
-    matrix = np.linalg.inv(util.matrix_translate(shift))
-
-    tests = param['tests']
-    for i in tests:
-        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
-        util.save_mrc(tests[i]['expected'], expected)
-    print("\t-- Generated: translate")
-
-
-def generate_apply2d(param):
-    image = util.load_mrc(param['input'])
-    border_value = param['border_value']
-    center = np.array(param['center'])
-    scale = np.array(param['scale'])
-    rotate = param['rotate']
-    shift = np.array(param['shift'])
-
-    matrix = np.linalg.inv(util.matrix_translate(shift) @
-                           util.matrix_translate(center) @
-                           util.matrix_rotate(rotate) @
-                           util.matrix_scale(scale) @
-                           util.matrix_translate(-center))
-
-    tests = param['tests']
-    for i in tests:
-        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
-        util.save_mrc(tests[i]['expected'], expected)
-    print("\t-- Generated: apply")
+    print("\t-- Generated: transform 2D")
 
 
 if __name__ == '__main__':
@@ -98,7 +50,4 @@ if __name__ == '__main__':
     # This is spline interpolation, so order=3 is cubic spline which is not quite equivalent to INTERP_CUBIC and
     # INTERP_CUBIC_BSPLINE from noa. So here just compute nearest and linear. The other interpolation methods will
     # be tested against manually checked data.
-    generate_rotate2d(parameters['rotate2D'])
-    generate_scale2d(parameters['scale2D'])
-    generate_translate2d(parameters['shift2D'])
-    generate_apply2d(parameters['transform2D'])
+    generate_transform2d(parameters['transform2D'])

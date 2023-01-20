@@ -23,8 +23,8 @@ def mask_hanning(array):
 def generate_input(inputs):
     # Generate a soft square/cube in the center of the image
     n = 64
-    img_2d = mask_hanning(np.linspace(-1, 1, n ** 2, dtype=np.float32).reshape((n, n)))
-    img_3d = mask_hanning(np.linspace(-1, 1, n ** 3, dtype=np.float32).reshape((n, n, n)))
+    img_2d = mask_hanning(np.linspace(0, 2, n ** 2, dtype=np.float32).reshape((n, n)))
+    img_3d = mask_hanning(np.linspace(0, 2, n ** 3, dtype=np.float32).reshape((n, n, n)))
 
     for entry in inputs:
         shape = np.asarray(entry['shape'])
@@ -44,7 +44,7 @@ def generate_input(inputs):
         # FIXME I didn't find a better solution than to mask the last real-valued Nyquist...
         if not shape[-1] % 2:
             out = np.fft.fftshift(np.fft.fftn(out))
-            out *= util.fft_get_mask_cutoff(shape, ((shape[-1] - shape[-1] // 2) - 1) / shape[-1])
+            out *= util.fft_get_mask_cutoff(shape, 0.45)
             out = np.real(np.fft.ifftn(np.fft.fftshift(out)))
 
         util.save_mrc(entry['name'], out)

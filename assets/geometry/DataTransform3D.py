@@ -16,73 +16,25 @@ def generate_input(filename):
     print("\t-- Generated: input")
 
 
-def generate_rotate3d(param):
+def generate_transform3d(param):
     image = util.load_mrc(param['input'])
-    border_value = param['border_value']
-    euler = param['euler']
-    center = np.array(param['center'])
 
-    matrix = np.linalg.inv(util.matrix_translate(center) @
-                           util.matrix_rotate(euler) @
-                           util.matrix_translate(-center))
+    for i in param['tests']:
+        test = param['tests'][i]
+        cvalue = test['cvalue']
+        center = np.array(test['center'])
+        scale = test['scale']
+        euler = test['euler']
+        shift = test['shift']
+        matrix = np.linalg.inv(util.matrix_translate(shift) @
+                               util.matrix_translate(center) @
+                               util.matrix_rotate(euler) @
+                               util.matrix_scale(scale) @
+                               util.matrix_translate(-center))
+        expected = util.transform_affine(image, matrix, test['interp'], test['border'], cvalue)
+        util.save_mrc(test['expected'], expected)
 
-    tests = param['tests']
-    for i in tests:
-        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
-        util.save_mrc(tests[i]['expected'], expected)
-    print("\t-- Generated: rotate")
-
-
-def generate_scale3d(param):
-    image = util.load_mrc(param['input'])
-    border_value = param['border_value']
-    scale = param['scale']
-    center = np.array(param['center'])
-
-    matrix = np.linalg.inv(util.matrix_translate(center) @
-                           util.matrix_scale(scale) @
-                           util.matrix_translate(-center))
-
-    tests = param['tests']
-    for i in tests:
-        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
-        util.save_mrc(tests[i]['expected'], expected)
-    print("\t-- Generated: scale")
-
-
-def generate_translate3d(param):
-    image = util.load_mrc(param['input'])
-    border_value = param['border_value']
-    shift = param['shift']
-
-    matrix = np.linalg.inv(util.matrix_translate(shift))
-
-    tests = param['tests']
-    for i in tests:
-        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
-        util.save_mrc(tests[i]['expected'], expected)
-    print("\t-- Generated: translate")
-
-
-def generate_apply3d(param):
-    image = util.load_mrc(param['input'])
-    border_value = param['border_value']
-    center = np.array(param['center'])
-    scale = param['scale']
-    euler = param['euler']
-    shift = param['shift']
-
-    matrix = np.linalg.inv(util.matrix_translate(shift) @
-                           util.matrix_translate(center) @
-                           util.matrix_rotate(euler) @
-                           util.matrix_scale(scale) @
-                           util.matrix_translate(-center))
-
-    tests = param['tests']
-    for i in tests:
-        expected = util.transform_affine(image, matrix, tests[i]['interp'], tests[i]['border'], border_value)
-        util.save_mrc(tests[i]['expected'], expected)
-    print("\t-- Generated: apply")
+    print("\t-- Generated: transform 3D")
 
 
 if __name__ == '__main__':
@@ -94,7 +46,4 @@ if __name__ == '__main__':
     # This is spline interpolation, so order=3 is cubic spline which is not quite equivalent to INTERP_CUBIC and
     # INTERP_CUBIC_BSPLINE from noa. So here just compute nearest and linear. The other interpolation methods will
     # be tested against manually checked data.
-    generate_rotate3d(parameters['rotate3D'])
-    generate_scale3d(parameters['scale3D'])
-    generate_translate3d(parameters['shift3D'])
-    generate_apply3d(parameters['transform3D'])
+    generate_transform3d(parameters['transform3D'])
