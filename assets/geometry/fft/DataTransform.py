@@ -53,7 +53,7 @@ def generate_input(inputs):
 def apply_affine(dft, scale, angle):
     # dft should be centered (fftshifted).
     # First, scale to normalize the coordinate system.
-    shape = np.array(dft.shape, dtype=float) // 2 * 2
+    shape = np.array(dft.shape, dtype=float)
     if shape[1] == 1:
         ndim = 2
     else:
@@ -96,7 +96,7 @@ def apply(img, scale, angle, center, shift, cutoff):
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    for key in ['transform2D', 'transform3D']:
+    for key in ['transform_2d', 'transform_3d']:
         parameters = util.load_yaml('tests.yaml')[key]
         generate_input(parameters['inputs'])
 

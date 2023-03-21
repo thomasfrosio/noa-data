@@ -199,13 +199,13 @@ def fft_get_mask_cutoff(shape, cutoff):
              to remove all components after the specified cutoff.
     """
     shape = np.array(shape, dtype=float)
-    vx = np.abs(np.arange(shape[-1], dtype=np.float32) - shape[-1] // 2) / (shape[-1] // 2 * 2)
-    vy = np.abs(np.arange(shape[-2], dtype=np.float32) - shape[-2] // 2) / (shape[-2] // 2 * 2)
+    vx = np.abs(np.arange(shape[-1], dtype=np.float32) - shape[-1] // 2) / shape[-1]
+    vy = np.abs(np.arange(shape[-2], dtype=np.float32) - shape[-2] // 2) / shape[-2]
 
     if np.size(shape) == 2:
         mask = vy.reshape((-1, 1)) ** 2 + vx.reshape((1, -1)) ** 2
     elif np.size(shape) == 3:
-        vz = np.abs(np.arange(shape[0], dtype=np.float32) - shape[0] // 2) / (shape[0] // 2 * 2)
+        vz = np.abs(np.arange(shape[0], dtype=np.float32) - shape[0] // 2) / shape[0]
         mask = (vz.reshape((-1, 1, 1)) ** 2 +
                 vy.reshape((1, -1, 1)) ** 2 +
                 vx.reshape((1, 1, -1)) ** 2)
