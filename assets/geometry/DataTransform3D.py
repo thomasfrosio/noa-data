@@ -46,4 +46,4 @@ if __name__ == '__main__':
     # This is spline interpolation, so order=3 is cubic spline which is not quite equivalent to INTERP_CUBIC and
     # INTERP_CUBIC_BSPLINE from noa. So here just compute nearest and linear. The other interpolation methods will
     # be tested against manually checked data.
-    generate_transform3d(parameters['transform3D'])
+    generate_transform3d(parameters['transform_3d'])

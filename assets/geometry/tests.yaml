@@ -1,7 +1,7 @@
 input2D: &input2D tmp_image2D.mrc  # shape: [1,1,256,256]
 input3D: &input3D tmp_image3D.mrc  # shape: [1,64,64,64]
 
-transform2D: # scale, rotate, then shift
+transform_2d: # scale, rotate, then shift
   input: *input2D
 
   tests:
@@ -86,7 +86,7 @@ transform2D: # scale, rotate, then shift
       interp: INTERP_LINEAR
       border: BORDER_REFLECT
 
-transform2D_cubic: # scale then rotate
+transform_2d_cubic: # scale then rotate
   input: transform2D_cubic_input.mrc
   shape: [ 1, 1, 480, 481 ]
   center: [ 239, 240 ] # (n-1)/2
@@ -121,7 +121,7 @@ transform2D_cubic: # scale then rotate
 
 # -- 3D -- #
 
-transform3D: # scale, rotate, then shift
+transform_3d: # scale, rotate, then shift
   input: *input3D
   tests:
     0:
@@ -188,7 +188,7 @@ transform3D: # scale, rotate, then shift
       interp: INTERP_LINEAR
       border: BORDER_PERIODIC
 
-transform3D_cubic: # scale then rotate
+transform_3d_cubic: # scale then rotate
   input: transform3D_cubic_input.mrc  # shape: [1,64,65,66]
   center: [ 31, 32, 32 ]
   scale: [ 0.8, 0.8, 0.8 ]
@@ -220,7 +220,7 @@ transform3D_cubic: # scale then rotate
       interp: INTERP_CUBIC_BSPLINE
       border: BORDER_MIRROR
 
-transform2D_symmetry:
+transform_2d_symmetry:
   input: transform2D_symmetry_input.mrc # [512,512]
   tests:
     0:
@@ -266,7 +266,7 @@ transform2D_symmetry:
       center: [ 256,256 ]
       interp: INTERP_LINEAR
 
-transform3D_symmetry:
+transform_3d_symmetry:
   input:
     0: &input3D_sym0 transform3D_symmetry_input00.mrc # [150,150,150]
     1: &input3D_sym1 transform3D_symmetry_input01.mrc # [150,150,150]
@@ -311,3 +311,188 @@ transform3D_symmetry:
       angles: [ 90,-30,-90 ] # deg
       center: [ 75,75,75 ]
       interp: INTERP_LINEAR
+
+sphere:
+  test2D:
+    0:
+      invert: true
+      shape: [ 1,1,128,128 ]
+      center: [ 64,64 ]
+      radius: 40
+      taper: 0
+      cvalue: 1
+      expected: sphere_00.mrc
+    1:
+      invert: false
+      shape: [ 1,1,128,128 ]
+      center: [ 64,64 ]
+      radius: 41
+      taper: 3
+      cvalue: 2
+      expected: sphere_01.mrc
+    2:
+      invert: true
+      shape: [ 1,1,256,256 ]
+      center: [ 128,1 ]
+      radius: 108
+      taper: 19
+      cvalue: -1
+      expected: sphere_02.mrc
+  test3D:
+    0:
+      invert: false
+      shape: [ 1,100,100,100 ]
+      center: [ 30,50,70 ]
+      radius: 30
+      taper: 1
+      cvalue: 1
+      expected: sphere_03.mrc
+    1:
+      invert: true
+      shape: [ 1,100,100,100 ]
+      center: [ 30,50,70 ]
+      radius: 20
+      taper: 10
+      cvalue: 3
+      expected: sphere_04.mrc
+
+rectangle:
+  test2D:
+    0:
+      invert: false
+      shape: [ 1,1,512,512 ]
+      center: [ 256,256 ]
+      radius: [ 51,50 ]
+      taper: 0
+      angle: 0
+      cvalue: 1
+      expected: rectangle_00.mrc
+    1:
+      invert: true
+      shape: [ 1,1,230,231 ]
+      center: [ 126,104 ]
+      radius: [ 51,50 ]
+      taper: 3
+      angle: 20
+      cvalue: 2
+      expected: rectangle_01.mrc
+    2:
+      invert: false
+      shape: [ 1,1,256,128 ]
+      center: [ 138,76 ]
+      radius: [ 80,30 ]
+      taper: 10
+      angle: -35
+      cvalue: -1
+      expected: rectangle_02.mrc
+  test3D:
+    0:
+      invert: false
+      shape: [ 1,64,128,128 ]
+      center: [ 43,64,84 ]
+      radius: [ 8,20,30 ]
+      taper: 10
+      tilt: 20
+      cvalue: 1
+      expected: rectangle_03.mrc
+    1:
+      invert: false
+      shape: [ 1,64,64,64 ]
+      center: [ 32,22,32 ]
+      radius: [ 15,10,10 ]
+      taper: 15
+      tilt: 0
+      cvalue: 1
+      expected: rectangle_04.mrc
+
+cylinder:
+  test:
+    0:
+      invert: false
+      shape: [ 1,64,256,256 ]
+      center: [ 32,128,128 ]
+      radius: 60
+      length: 20
+      taper: 2
+      tilt: 0
+      cvalue: 1
+      expected: cylinder_00.mrc
+    1:
+      invert: false
+      shape: [ 1,128,128,128 ]
+      center: [ 64,75,53 ]
+      radius: 31
+      length: 45
+      taper: 11
+      tilt: 35
+      cvalue: 1
+      expected: cylinder_01.mrc
+    2:
+      invert: false
+      shape: [ 1,180,91,80 ]
+      center: [ 100,45,34 ]
+      radius: 10
+      length: 29
+      taper: 10
+      tilt: 90
+      cvalue: 1
+      expected: cylinder_02.mrc
+
+ellipse:
+  test2D:
+    0:
+      invert: false
+      shape: [ 1,1,128,128 ]
+      center: [ 64,64 ]
+      radius: [ 55,64 ]
+      taper: 1
+      angle: 0
+      cvalue: 1
+      expected: ellipse_00.mrc
+    1:
+      invert: true
+      shape: [ 1,1,128,156 ]
+      center: [ 64,64 ]
+      radius: [ 30,48 ]
+      taper: 1
+      angle: 45
+      cvalue: 1
+      expected: ellipse_01.mrc
+    2:
+      invert: false
+      shape: [ 1,1,256,256 ]
+      center: [ 128,1 ]
+      radius: [ 128,65 ]
+      taper: 19
+      angle: 0
+      cvalue: 1
+      expected: ellipse_02.mrc
+    3:
+      invert: true
+      shape: [ 1,1,256,256 ]
+      center: [ 129,120 ]
+      radius: [ 100,32 ]
+      taper: 6
+      angle: -15
+      cvalue: 1
+      expected: ellipse_03.mrc
+  test3D:
+    0:
+      invert: false
+      shape: [ 1,100,85,105 ]
+      center: [ 30,50,70 ]
+      radius: [ 30,35,25 ]
+      taper: 2
+      tilt: 0
+      cvalue: 1
+      expected: ellipse_04.mrc
+    1:
+      invert: true
+      shape: [ 1,100,98,99 ]
+      center: [ 30,50,70 ]
+      radius: [ 5,15,25 ]
+      taper: 10
+      tilt: 15
+      cvalue: 1
+      expected: ellipse_05.mrc
+

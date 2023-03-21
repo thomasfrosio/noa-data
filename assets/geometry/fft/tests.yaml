@@ -1,4 +1,4 @@
-transform2D:
+transform_2d:
   inputs:
     # There's a bug/limitation in the C++ implementation for non-redundant FFTs.
     # The workaround is to low-pass filter the real-valued Nyquist on even sizes.
@@ -66,7 +66,7 @@ transform2D:
       cutoff: 0.45
       interp: INTERP_LINEAR
 
-transform3D:
+transform_3d:
   inputs:
     - name: &input3D_0 tmp_transform3D_input_00.mrc
       shape: [ 1,160,160,160 ]
@@ -130,7 +130,7 @@ transform3D:
       cutoff: 0.45
       interp: INTERP_LINEAR
 
-insert3D_rasterisation:
+insert_rasterize_3d:
   tests:
     0:
       slice_shape: [ 5,1,128,128 ]
@@ -160,7 +160,7 @@ insert3D_rasterisation:
       ews_radius: 50 # 1/0.02
       grid_filename: insert3D_rasterisation_grid2.mrc
 
-insert3D_interpolation:
+insert_interpolate_3d:
   tests:
     0:
       slice_shape: [ 5,1,128,128 ]
@@ -193,7 +193,7 @@ insert3D_interpolation:
       slice_z_radius: 0.003
       grid_filename: insert3D_interp_grid2.mrc
 
-extract3D_from_grid:
+extract_3d:
   grid_shape: [ 1,128,128,128 ]
   grid_filename: extract3D_input_grid.mrc
   tests:
@@ -212,7 +212,7 @@ extract3D_from_grid:
       ews_radius: 0
       slice_filename: extract3D_slice1.mrc
 
-extract3D_from_slices:
+insert_interpolate_and_extract_3d:
   tests:
     0:
       input_slice_shape: [ 4,1,512,512 ]
