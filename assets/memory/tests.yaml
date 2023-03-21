@@ -182,7 +182,7 @@ resize: # the inputs are a range from 0 to N
     border: BORDER_REFLECT
     border_value: 0
 
-index:
+subregions:
   # the input arrays are set with values from 0 to N, subregions are extracted,
   # the arrays are reset to value=4 and subregions are re-inserted.
   0:
