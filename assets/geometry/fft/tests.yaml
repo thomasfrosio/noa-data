@@ -222,4 +222,46 @@ insert_interpolate_and_extract_3d:
       cutoff: 0.5
       ews_radius: 0
       slice_z_radius: 0.005
-      output_slice_filename: extract3D_slice2.mrc
+      output_slice_filename: insert_extract_slice0.mrc
+    1:
+      input_slice_shape: [ 1,1,256,256 ]
+      output_slice_shape: [ 1,1,256,256 ]
+      input_rotate: [ 0 ] # tilt Y
+      output_rotate: [ 0 ] # tilt Y
+      cutoff: 0.5
+      ews_radius: 0
+      slice_z_radius: 0.005
+      output_slice_filename: insert_extract_slice1.mrc
+    2:
+      input_slice_shape: [ 2,1,256,256 ]
+      output_slice_shape: [ 1,1,256,256 ]
+      input_rotate: [ 0, 90 ] # tilt Y
+      output_rotate: [ 0 ] # tilt Y
+      cutoff: 0.5
+      ews_radius: 0
+      slice_z_radius: 0.2
+      output_slice_filename: insert_extract_slice2.mrc
+
+ellipse:
+  tests:
+    0:
+      filename: ellipse_fft_00.mrc
+      shape: [1,1,256,256]
+      center: [0,128,128]
+      radius: [1,64,128]
+      edge_size: 10
+      angles: [69,0,0] # ZYX intrinsic
+    1:
+      filename: ellipse_fft_01.mrc
+      shape: [1,128,128,128]
+      center: [64,64,64]
+      radius: [64,35,55]
+      edge_size: 5
+      angles: [-45,0,40]
+    2:
+      filename: ellipse_fft_02.mrc
+      shape: [1,128,128,128]
+      center: [64,0,64]
+      radius: [45,45,64]
+      edge_size: 10
+      angles: [0,0,0]

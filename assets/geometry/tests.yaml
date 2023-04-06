@@ -495,4 +495,3 @@ ellipse:
       tilt: 15
       cvalue: 1
       expected: ellipse_05.mrc
-

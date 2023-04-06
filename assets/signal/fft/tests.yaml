@@ -139,27 +139,3 @@ shift:
       cutoff: 1
       input: ""
       output: tmp_shift3D_02.mrc
-
-ellipse:
-  tests:
-    0:
-      filename: ellipse_fft_00.mrc
-      shape: [1,1,256,256]
-      center: [0,128,128]
-      radius: [1,64,128]
-      edge_size: 10
-      angles: [69,0,0] # ZYX intrinsic
-    1:
-      filename: ellipse_fft_01.mrc
-      shape: [1,128,128,128]
-      center: [64,64,64]
-      radius: [64,35,55]
-      edge_size: 5
-      angles: [-45,0,40]
-    2:
-      filename: ellipse_fft_02.mrc
-      shape: [1,128,128,128]
-      center: [64,0,64]
-      radius: [45,45,64]
-      edge_size: 10
-      angles: [0,0,0]
