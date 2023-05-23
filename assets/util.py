@@ -165,27 +165,31 @@ def transform_affine(array, matrix, noa_interp, noa_border, border_value):
 
 
 # FFT ------------------------------------------------------------------------------------------------------------------
-def fft_get_phase_shift(shape, shift, dtype = np.float32):
+
+def get_fft_freq(size, rfft=False):
+    return np.fft.rfftfreq(size) if rfft else np.fft.fftfreq(size)
+
+
+def fft_get_phase_shift(shape, shift, rfft=False, dtype=np.float32):
     """
     :param shape:   [y,x] or [z,y,x] shape
     :param shift:   [y,x] or [z,y,x] shifts
-    :return: Phase shifts for redundant centered FFTs
+    :param rfft:    Whether the rfft should be generated instead
+    :param dtype:   Precision used for computation
+    :return: Phase shifts
     """
     if np.size(shape) == 2:
-        x, y = (np.arange(shape[-1], dtype=dtype) - shape[-1] // 2,  # -5 -4 -3 -2 -1 0 1 2 3 4
-                np.arange(shape[-2], dtype=dtype) - shape[-2] // 2)
+        x = np.asarray(get_fft_freq(shape[-1], rfft), dtype=dtype)
+        y = np.asarray(get_fft_freq(shape[-2]), dtype=dtype)
         gx, gy = np.meshgrid(x, y)
-        factors = -2 * np.pi * (shift[-1] * gx / shape[-1] +
-                                shift[-2] * gy / shape[-2])
+        factors = -2 * np.pi * (shift[-1] * gx + shift[-2] * gy)
 
     elif np.size(shape) == 3:
-        x, y, z = (np.reshape(np.arange(shape[-1], dtype=dtype) - shape[-1] // 2, (1, 1, -1)),
-                   np.reshape(np.arange(shape[-2], dtype=dtype) - shape[-2] // 2, (1, -1, 1)),
-                   np.reshape(np.arange(shape[-3], dtype=dtype) - shape[-3] // 2, (-1, 1, 1)))
+        x, y, z = (np.reshape(np.asarray(get_fft_freq(shape[-1], rfft), dtype=dtype), (1, 1, -1)),
+                   np.reshape(np.asarray(get_fft_freq(shape[-2]), dtype=dtype), (1, -1, 1)),
+                   np.reshape(np.asarray(get_fft_freq(shape[-3]), dtype=dtype), (-1, 1, 1)))
         gz, gy, gx = np.meshgrid(z, y, x, indexing='ij')
-        factors = -2 * np.pi * (shift[2] * gx / shape[-1] +
-                                shift[1] * gy / shape[-2] +
-                                shift[0] * gz / shape[-3])
+        factors = -2 * np.pi * (shift[2] * gx + shift[1] * gy + shift[0] * gz)
     else:
         raise RuntimeError
     return np.cos(factors) + 1j * np.sin(factors)
