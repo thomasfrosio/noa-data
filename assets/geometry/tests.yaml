@@ -495,3 +495,32 @@ ellipse:
       tilt: 15
       cvalue: 1
       expected: ellipse_05.mrc
+
+polar:
+  0:
+    cartesian_shape: [1, 1, 256, 256]
+    polar_shape: [1, 1, 512, 128]
+    cartesian_center: [128, 128]
+    radius_range: [0, 128]
+    angle_range: [0, 6.283185307]
+    interpolation_mode: INTERP_LINEAR
+    input: cartesian_input_00.mrc
+    output: polar_output_00.mrc
+  1:
+    cartesian_shape: [1, 1, 256, 256]
+    polar_shape: [1, 1, 256, 64]
+    cartesian_center: [71, 80]
+    radius_range: [24, 64]
+    angle_range: [0, 6.283185307]
+    interpolation_mode: INTERP_CUBIC
+    input: cartesian_input_01.mrc
+    output: polar_output_01.mrc
+  2:
+    cartesian_shape: [3, 1, 64, 128]
+    polar_shape: [3, 1, 256, 128]
+    cartesian_center: [32, 32]
+    radius_range: [0, 28]
+    angle_range: [0, 3.1415]
+    interpolation_mode: INTERP_LINEAR
+    input: cartesian_input_02.mrc
+    output: polar_output_02.mrc
