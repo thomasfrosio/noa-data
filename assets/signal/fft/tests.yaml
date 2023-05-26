@@ -99,7 +99,7 @@ bandpass: # assets are not batched
     width: [ 0,0.1 ]
     path: bandpass_04.mrc
 
-shift:
+shift: # save rfft
   2d:
     0:
       shape: [ 1,1,64,71 ]
@@ -133,3 +133,35 @@ shift:
       shift: [ 32,32,65.5 ]
       input: ""
       output: tmp_shift3d_02.mrc
+
+ctf_isotropic:
+  0:
+    output: ctf_iso_00.mrc
+    shape: [ 1,1,128,128 ]
+    pixel_size: 1
+    defocus: 0.5
+    voltage: 300
+    amplitude: 0.02
+    cs: 2.7
+    phase_shift: 0
+    bfactor: -30
+  1:
+    output: ctf_iso_01.mrc
+    shape: [ 1,1,512,512 ]
+    pixel_size: 1.5
+    defocus: 2.5
+    voltage: 200
+    amplitude: 0.05
+    cs: 2.7
+    phase_shift: 0.25
+    bfactor: -20
+  2:
+    output: ctf_iso_02.mrc
+    shape: [ 1,1,2048,2048 ]
+    pixel_size: 1
+    defocus: 2.5
+    voltage: 300
+    amplitude: 0.02
+    cs: 2.7
+    phase_shift: 0.3
+    bfactor: -30
