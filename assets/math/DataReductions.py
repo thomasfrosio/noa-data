@@ -22,6 +22,7 @@ def generate_all(param):
                'median': float(np.median(data)),
                'sum': float(np.sum(data.astype(np.double))),
                'mean': float(np.mean(data.astype(np.double))),
+               'norm': float(np.linalg.norm(data.astype(np.double))),
                'var': float(np.var(data.astype(np.double))),
                'std': float(np.std(data.astype(np.double)))}
     util.save_yaml(param['all']['output_path'], results)
@@ -35,6 +36,7 @@ def generate_batch(param):
                           'max': float(np.max(data[batch, ...])),
                           'sum': float(np.sum(data[batch, ...].astype(np.double))),
                           'mean': float(np.mean(data[batch, ...].astype(np.double))),
+                          'norm': float(np.linalg.norm(data[batch, ...].astype(np.double))),
                           'var': float(np.var(data[batch, ...].astype(np.double))),
                           'std': float(np.std(data[batch, ...].astype(np.double)))}
     util.save_yaml(param['batch']['output_path'], results)
@@ -49,6 +51,7 @@ def generate_axes(param):
         util.save_mrc(param[key]['output_max'], np.max(data, axis=i).reshape(output_shape))
         util.save_mrc(param[key]['output_sum'], np.sum(data.astype(np.double), axis=i).reshape(output_shape))
         util.save_mrc(param[key]['output_mean'], np.mean(data.astype(np.double), axis=i).reshape(output_shape))
+        util.save_mrc(param[key]['output_norm'], np.linalg.norm(data.astype(np.double), axis=i).reshape(output_shape))
         util.save_mrc(param[key]['output_var'], np.var(data.astype(np.double), axis=i).reshape(output_shape))
         util.save_mrc(param[key]['output_std'], np.std(data.astype(np.double), axis=i).reshape(output_shape))
 
@@ -69,6 +72,7 @@ def generate_complex(param):
     mean = np.mean(data.astype(np.complex128))
     results['mean_real'] = float(mean.real)
     results['mean_imag'] = float(mean.imag)
+    results['norm'] = float(np.linalg.norm(data.astype(np.complex128)))
     results['var'] = float(np.var(data.astype(np.complex128), ddof=1))
     results['std'] = float(np.std(data.astype(np.complex128), ddof=1))
     util.save_yaml(param['output_path'], results)

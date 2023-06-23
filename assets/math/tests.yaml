@@ -14,6 +14,7 @@ reduce_to_stats:
     output_max: tmp_stats_output0_max.mrc
     output_sum: tmp_stats_output0_sum.mrc
     output_mean: tmp_stats_output0_mean.mrc
+    output_norm: tmp_stats_output0_norm.mrc
     output_var: tmp_stats_output0_var.mrc
     output_std: tmp_stats_output0_std.mrc
   axis1:
@@ -22,6 +23,7 @@ reduce_to_stats:
     output_max: tmp_stats_output1_max.mrc
     output_sum: tmp_stats_output1_sum.mrc
     output_mean: tmp_stats_output1_mean.mrc
+    output_norm: tmp_stats_output1_norm.mrc
     output_var: tmp_stats_output1_var.mrc
     output_std: tmp_stats_output1_std.mrc
   axis2:
@@ -30,6 +32,7 @@ reduce_to_stats:
     output_max: tmp_stats_output2_max.mrc
     output_sum: tmp_stats_output2_sum.mrc
     output_mean: tmp_stats_output2_mean.mrc
+    output_norm: tmp_stats_output2_norm.mrc
     output_var: tmp_stats_output2_var.mrc
     output_std: tmp_stats_output2_std.mrc
   axis3:
@@ -38,6 +41,7 @@ reduce_to_stats:
     output_max: tmp_stats_output3_max.mrc
     output_sum: tmp_stats_output3_sum.mrc
     output_mean: tmp_stats_output3_mean.mrc
+    output_norm: tmp_stats_output3_norm.mrc
     output_var: tmp_stats_output3_var.mrc
     output_std: tmp_stats_output3_std.mrc
 
