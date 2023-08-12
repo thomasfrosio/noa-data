@@ -165,3 +165,35 @@ ctf_isotropic:
     cs: 2.7
     phase_shift: 0.3
     bfactor: -30
+
+ctf_anisotropic:
+  0:
+    output: ctf_aniso_00.mrc
+    shape: [ 1,1,128,128 ]
+    pixel_size: [1, 1]
+    defocus: [0.5, 0, 0]
+    voltage: 300
+    amplitude: 0.02
+    cs: 2.7
+    phase_shift: 0
+    bfactor: -30
+  1:
+    output: ctf_aniso_01.mrc
+    shape: [ 1,1,512,512 ]
+    pixel_size: [1.5, 1]
+    defocus: [2.5, 0.5, 0]
+    voltage: 200
+    amplitude: 0.05
+    cs: 2.7
+    phase_shift: 0.25
+    bfactor: -20
+  2:
+    output: ctf_aniso_02.mrc
+    shape: [ 1,1,512,512 ]
+    pixel_size: [1, 1]
+    defocus: [2.5, 0.3, 45] # in degrees
+    voltage: 300
+    amplitude: 0.02
+    cs: 2.7
+    phase_shift: 0.3
+    bfactor: -30
