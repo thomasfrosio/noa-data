@@ -130,117 +130,179 @@ transform_3d:
       cutoff: 0.45
       interp: INTERP_LINEAR
 
-insert_rasterize_3d:
+fourier_insert_rasterize_3d:
   tests:
     0:
       slice_shape: [ 5,1,128,128 ]
-      grid_shape: [ 1,100,256,256 ]
+      volume_shape: [ 1,100,256,256 ]
       target_shape: [ 1,256,256,256 ]
       scale: 1
       rotate: [ 0,3,-3,6,-6 ] # tilt Y
-      cutoff: 0.5
+      fftfreq_cutoff: 0.5
       ews_radius: 0
-      grid_filename: insert3D_rasterisation_grid0.mrc
+      volume_filename: fourier_insert_3d_rasterize_volume_00.mrc
     1:
       slice_shape: [ 10,1,128,128 ]
-      grid_shape: [ 1,128,128,128 ]
+      volume_shape: [ 1,128,128,128 ]
       target_shape: [ 0,256,256,256 ]
       scale: 1
       rotate: [ 0,2,4,6,8,10,12,14,16,18 ] # tilt Y
-      cutoff: 0.4
+      fftfreq_cutoff: 0.4
       ews_radius: 0
-      grid_filename: insert3D_rasterisation_grid1.mrc
+      volume_filename: fourier_insert_3d_rasterize_volume_01.mrc
     2:
       slice_shape: [ 1,1,512,512 ]
-      grid_shape: [ 1,10,512,512 ]
+      volume_shape: [ 1,10,512,512 ]
       target_shape: [ 1,512,512,512 ]
       scale: 1
       rotate: [ 0 ] # tilt Y
-      cutoff: 0.5
+      fftfreq_cutoff: 0.5
       ews_radius: 50 # 1/0.02
-      grid_filename: insert3D_rasterisation_grid2.mrc
+      volume_filename: fourier_insert_3d_rasterize_volume_02.mrc
 
-insert_interpolate_3d:
+fourier_insert_interpolate_3d:
   tests:
     0:
       slice_shape: [ 5,1,128,128 ]
-      grid_shape: [ 1,100,256,256 ]
+      volume_shape: [ 1,100,256,256 ]
       target_shape: [ 1,256,256,256 ]
       scale: 1
-      rotate: [ 0,3,-3,6,-6 ] # tilt Y
-      cutoff: 0.5
+      rotate: [ 0,9,-9,16,-16 ] # tilt Y
+      fftfreq_cutoff: 0.5
+      fftfreq_sinc: 0.02
+      fftfreq_blackman: 0.02
       ews_radius: 0
-      slice_z_radius: 0.02
-      grid_filename: insert3D_interp_grid0.mrc
+      volume_filename: fourier_insert_3d_interp_volume_00.mrc
     1:
-      slice_shape: [ 10,1,128,128 ]
-      grid_shape: [ 1,128,128,128 ]
+      slice_shape: [ 4,1,128,128 ]
+      volume_shape: [ 1,128,128,128 ]
       target_shape: [ 0,256,256,256 ]
       scale: 1
-      rotate: [ 0,2,4,6,8,10,12,14,16,18 ] # tilt Y
-      cutoff: 0.4
+      rotate: [ 0,9,15,-15 ] # tilt Y
+      fftfreq_cutoff: 0.4
+      fftfreq_sinc: 0.003
+      fftfreq_blackman: 0.012
       ews_radius: 0
-      slice_z_radius: 0.003
-      grid_filename: insert3D_interp_grid1.mrc
+      volume_filename: fourier_insert_3d_interp_volume_01.mrc
     2:
       slice_shape: [ 1,1,512,512 ]
-      grid_shape: [ 1,10,512,512 ]
+      volume_shape: [ 1,55,512,512 ]
       target_shape: [ 1,512,512,512 ]
       scale: 1
       rotate: [ 0 ] # tilt Y
-      cutoff: 0.5
+      fftfreq_cutoff: 0.5
+      fftfreq_sinc: 0.005
+      fftfreq_blackman: 0.0390625
+      ews_radius: 0 # 1/0.02
+      volume_filename: fourier_insert_3d_interp_volume_02.mrc
+    3:
+      slice_shape: [ 1,1,512,512 ]
+      volume_shape: [ 1,10,512,512 ]
+      target_shape: [ 1,512,512,512 ]
+      scale: 1
+      rotate: [ 0 ] # tilt Y
+      fftfreq_cutoff: 0.5
+      fftfreq_sinc: -1
+      fftfreq_blackman: 1
       ews_radius: 50 # 1/0.02
-      slice_z_radius: 0.003
-      grid_filename: insert3D_interp_grid2.mrc
+      volume_filename: fourier_insert_3d_interp_volume_03.mrc
 
-extract_3d:
-  grid_shape: [ 1,128,128,128 ]
-  grid_filename: extract3D_input_grid.mrc
+fourier_extract_3d:
+  volumes:
+    0:
+      shape: &fourier_extract_3d_input_shape0 [ 1,128,128,128 ]
+      filename: &fourier_extract_3d_input0 fourier_extract_3d_input_volume_00.mrc
+    1:
+      shape: &fourier_extract_3d_input_shape1 [ 1,128,128,128 ]
+      filename: &fourier_extract_3d_input1 fourier_extract_3d_input_volume_01.mrc
   tests:
     0:
+      volume_filename: *fourier_extract_3d_input0
+      volume_shape: *fourier_extract_3d_input_shape0
+      slice_filename: fourier_extract_3d_output_slice_00.mrc
       slice_shape: [ 9,1,128,128 ]
-      scale: 1
-      rotate: [ -60,-40,-20,-10,0,10,20,40,60 ] # tilt Y
-      cutoff: 0.5
+      slice_scale: 1
+      slice_rotate: [ -60,-40,-20,-10,0,10,20,40,60 ] # tilt Y
+      fftfreq_cutoff: 0.5
+      fftfreq_z_sinc: -1
+      fftfreq_z_blackman: -1
       ews_radius: 0
-      slice_filename: extract3D_slice0.mrc
     1:
+      volume_filename: *fourier_extract_3d_input0
+      volume_shape: *fourier_extract_3d_input_shape0
+      slice_filename: fourier_extract_3d_output_slice_01.mrc
       slice_shape: [ 9,1,64,64 ]
-      scale: 1
-      rotate: [ -60,-40,-20,-10,0,10,20,40,60 ] # tilt Y
-      cutoff: 0.5
+      slice_scale: 1
+      slice_rotate: [ -60,-40,-20,-10,0,10,20,40,60 ] # tilt Y
+      fftfreq_cutoff: 0.5
+      fftfreq_z_sinc: -1
+      fftfreq_z_blackman: -1
       ews_radius: 0
-      slice_filename: extract3D_slice1.mrc
+    2:
+      volume_filename: *fourier_extract_3d_input1
+      volume_shape: *fourier_extract_3d_input_shape1
+      slice_filename: fourier_extract_3d_output_slice_02.mrc
+      slice_shape: [ 1,1,128,128 ]
+      slice_scale: 1
+      slice_rotate: [ 0 ]
+      fftfreq_cutoff: 0.5
+      fftfreq_z_sinc: 0.0078125
+      fftfreq_z_blackman: -1
+      ews_radius: 0
+    3:
+      volume_filename: *fourier_extract_3d_input1
+      volume_shape: *fourier_extract_3d_input_shape1
+      slice_filename: fourier_extract_3d_output_slice_03.mrc
+      slice_shape: [ 1,1,128,128 ]
+      slice_scale: 1
+      slice_rotate: [ 0 ]
+      fftfreq_cutoff: 0.5
+      fftfreq_z_sinc: 0.0234375 # same sinc as input
+      fftfreq_z_blackman: 0.046875 # additional weighting
+      ews_radius: 0
 
-insert_interpolate_and_extract_3d:
+fourier_insert_interpolate_and_extract_3d:
   tests:
     0:
       input_slice_shape: [ 4,1,512,512 ]
       output_slice_shape: [ 3,1,512,512 ]
       input_rotate: [ -6,-3,3,6 ] # tilt Y
       output_rotate: [ -9, 0, 9 ] # tilt Y
-      cutoff: 0.5
       ews_radius: 0
-      slice_z_radius: 0.005
-      output_slice_filename: insert_extract_slice0.mrc
+      fftfreq_cutoff: 0.5
+      fftfreq_input_sinc: 0.005
+      fftfreq_input_blackman: 0.005
+      fftfreq_z_sinc: -1
+      fftfreq_z_blackman: -1
+      output_slice_filename: fourier_insert_extract_3d_slice_00.mrc
     1:
       input_slice_shape: [ 1,1,256,256 ]
       output_slice_shape: [ 1,1,256,256 ]
       input_rotate: [ 0 ] # tilt Y
       output_rotate: [ 0 ] # tilt Y
-      cutoff: 0.5
       ews_radius: 0
-      slice_z_radius: 0.005
-      output_slice_filename: insert_extract_slice1.mrc
+      fftfreq_cutoff: 0.5
+      fftfreq_input_sinc: 0.005
+      fftfreq_input_blackman: 0.005
+      fftfreq_z_sinc: -1
+      fftfreq_z_blackman: -1
+      output_slice_filename: fourier_insert_extract_3d_slice_01.mrc
     2:
       input_slice_shape: [ 2,1,256,256 ]
       output_slice_shape: [ 1,1,256,256 ]
       input_rotate: [ 0, 90 ] # tilt Y
       output_rotate: [ 0 ] # tilt Y
-      cutoff: 0.5
       ews_radius: 0
-      slice_z_radius: 0.2
-      output_slice_filename: insert_extract_slice2.mrc
+      fftfreq_cutoff: 0.5
+      fftfreq_input_sinc: 0.2
+      fftfreq_input_blackman: 0.2
+      fftfreq_z_sinc: -1
+      fftfreq_z_blackman: -1
+      output_slice_filename: fourier_insert_extract_3d_slice_02.mrc
+
+fourier_insert_interpolate_and_extract_3d_others:
+  test_rotation_filename: fourier_insert_extract_3d_others_00.mrc
+
 
 ellipse:
   tests:
