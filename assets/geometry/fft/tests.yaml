@@ -1,4 +1,4 @@
-transform_2d:
+transform_spectrum_2d:
   inputs:
     # There's a bug/limitation in the C++ implementation for non-redundant FFTs.
     # The workaround is to low-pass filter the real-valued Nyquist on even sizes.
@@ -66,7 +66,7 @@ transform_2d:
       cutoff: 0.45
       interp: INTERP_LINEAR
 
-transform_3d:
+transform_spectrum_3d:
   inputs:
     - name: &input3D_0 tmp_transform3D_input_00.mrc
       shape: [ 1,160,160,160 ]
