@@ -96,7 +96,7 @@ def apply(img, scale, angle, center, shift, cutoff):
 if __name__ == '__main__':
     util.set_cwd(__file__)
 
-    for key in ['transform_2d', 'transform_3d']:
+    for key in ['transform_spectrum_2d', 'transform_spectrum_3d']:
         parameters = util.load_yaml('tests.yaml')[key]
         generate_input(parameters['inputs'])
 

@@ -14,7 +14,7 @@ def save_mrc(filename, data):
     with mrcfile.new(filename, overwrite=True) as mrc:
         if data.dtype == np.complex64 or data.dtype == np.complex128:
             with warnings.catch_warnings():
-                warnings.filterwarnings("ignore", category=np.ComplexWarning)
+                warnings.filterwarnings("ignore") # category=np.ComplexWarning
                 mrc.set_data(data.astype(np.complex64))
         else:
             mrc.set_data(data.astype(np.float32))
