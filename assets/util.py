@@ -166,16 +166,17 @@ def transform_affine(array, matrix, noa_interp, noa_border, border_value):
 
 # FFT ------------------------------------------------------------------------------------------------------------------
 
-def get_fft_freq(size, rfft=False):
-    return np.fft.rfftfreq(size) if rfft else np.fft.fftfreq(size)
+def get_fft_freq(size, rfft=False, fftshift=False):
+    fftfreq = np.fft.rfftfreq(size) if rfft else np.fft.fftfreq(size)
+    if fftshift and not rfft:
+        fftfreq = np.fft.fftshift(fftfreq)
+    return fftfreq
 
 
-def fft_get_phase_shift(shape, shift, rfft=False, dtype=np.float32):
+def fft_get_phase_shift(shape, shift, rfft=False, fftshift=False, dtype=np.float32):
     """
-    :param shape:   [y,x] or [z,y,x] shape
-    :param shift:   [y,x] or [z,y,x] shifts
-    :param rfft:    Whether the rfft should be generated instead
-    :param dtype:   Precision used for computation
+    :param shape:       [y,x] or [z,y,x] shape
+    :param shift:       [y,x] or [z,y,x] shifts
     :return: Phase shifts
     """
     if np.size(shape) == 2:
@@ -185,9 +186,9 @@ def fft_get_phase_shift(shape, shift, rfft=False, dtype=np.float32):
         factors = -2 * np.pi * (shift[-1] * gx + shift[-2] * gy)
 
     elif np.size(shape) == 3:
-        x, y, z = (np.reshape(np.asarray(get_fft_freq(shape[-1], rfft), dtype=dtype), (1, 1, -1)),
-                   np.reshape(np.asarray(get_fft_freq(shape[-2]), dtype=dtype), (1, -1, 1)),
-                   np.reshape(np.asarray(get_fft_freq(shape[-3]), dtype=dtype), (-1, 1, 1)))
+        x, y, z = (np.reshape(np.asarray(get_fft_freq(shape[-1], rfft, fftshift=fftshift), dtype=dtype), (1, 1, -1)),
+                   np.reshape(np.asarray(get_fft_freq(shape[-2], fftshift=fftshift), dtype=dtype), (1, -1, 1)),
+                   np.reshape(np.asarray(get_fft_freq(shape[-3], fftshift=fftshift), dtype=dtype), (-1, 1, 1)))
         gz, gy, gx = np.meshgrid(z, y, x, indexing='ij')
         factors = -2 * np.pi * (shift[2] * gx + shift[1] * gy + shift[0] * gz)
     else:

@@ -85,9 +85,9 @@ def apply(img, scale, angle, center, shift, cutoff):
     """
     shape = img.shape
     dft = np.fft.fftshift(np.fft.fftn(img, norm='ortho'))
-    dft = dft * util.fft_get_phase_shift(shape, -np.array(center))
+    dft = dft * util.fft_get_phase_shift(shape, -np.array(center), rfft=False, fftshift=True, dtype=np.float64)
     dft_rotate = apply_affine(dft, scale, angle)
-    dft_rotate = dft_rotate * util.fft_get_phase_shift(shape, np.array(center) + shift)
+    dft_rotate = dft_rotate * util.fft_get_phase_shift(shape, np.array(center) + shift, rfft=False, fftshift=True, dtype=np.float64)
     dft_rotate *= util.fft_get_mask_cutoff(shape, cutoff)
     dft_rotate = np.real(np.fft.ifftn(np.fft.ifftshift(dft_rotate), norm='ortho'))
     return dft_rotate
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
         for i in parameters['tests']:
             test = parameters['tests'][i]
-            i_img = util.load_mrc(test['input'])
+            i_img = np.asarray(util.load_mrc(test['input']), dtype=np.float64)
             o_img = apply(i_img, test['scale'], test['rotate'], test['center'], test['shift'], test['cutoff'])
             util.save_mrc(test['expected'], o_img)
         print("\t-- Generated: {}".format(key))

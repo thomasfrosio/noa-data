@@ -133,6 +133,11 @@ shift: # save rfft
       shift: [ 32,32,65.5 ]
       input: ""
       output: tmp_shift3d_02.mrc
+    3:
+      shape: [ 1,160,160,160 ]
+      shift: [ 0,11.5,-20 ]
+      input: ""
+      output: tmp_shift3d_03.mrc
 
 ctf_isotropic:
   0:
