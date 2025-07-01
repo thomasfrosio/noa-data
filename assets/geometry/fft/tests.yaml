@@ -130,7 +130,7 @@ transform_spectrum_3d:
       cutoff: 0.45
       interp: INTERP_LINEAR
 
-fourier_insert_rasterize_3d:
+rasterize_central_slices_3d:
   tests:
     0:
       slice_shape: [ 5,1,128,128 ]
@@ -160,7 +160,7 @@ fourier_insert_rasterize_3d:
       ews_radius: 50 # 1/0.02
       volume_filename: fourier_insert_3d_rasterize_volume_02.mrc
 
-fourier_insert_interpolate_3d:
+insert_central_slices_3d:
   tests:
     0:
       slice_shape: [ 5,1,128,128 ]
@@ -207,7 +207,7 @@ fourier_insert_interpolate_3d:
       ews_radius: 50 # 1/0.02
       volume_filename: fourier_insert_3d_interp_volume_03.mrc
 
-fourier_extract_3d:
+extract_central_slices_3d:
   volumes:
     0:
       shape: &fourier_extract_3d_input_shape0 [ 1,128,128,128 ]
@@ -261,7 +261,7 @@ fourier_extract_3d:
       fftfreq_z_blackman: 0.046875 # additional weighting
       ews_radius: 0
 
-fourier_insert_interpolate_and_extract_3d:
+insert_and_extract_central_slices_3d:
   tests:
     0:
       input_slice_shape: [ 4,1,512,512 ]
