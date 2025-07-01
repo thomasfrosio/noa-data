@@ -300,7 +300,7 @@ insert_and_extract_central_slices_3d:
       fftfreq_z_blackman: -1
       output_slice_filename: fourier_insert_extract_3d_slice_02.mrc
 
-fourier_insert_interpolate_and_extract_3d_others:
+insert_and_extract_central_slices_3d_others:
   test_rotation_filename: fourier_insert_extract_3d_others_00.mrc
 
 
