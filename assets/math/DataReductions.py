@@ -16,7 +16,7 @@ def generate_input(param):
 
 
 def generate_all(param):
-    data = util.load_mrc(param['input']['path'])
+    data = np.asarray(util.load_mrc(param['input']['path']), dtype=np.float64)
     results = {'min': float(np.min(data)),
                'max': float(np.max(data)),
                'median': float(np.median(data)),
@@ -29,7 +29,7 @@ def generate_all(param):
 
 
 def generate_batch(param):
-    data = util.load_mrc(param['input']['path'])
+    data = np.asarray(util.load_mrc(param['input']['path']), dtype=np.float64)
     results = dict()
     for batch in range(data.shape[0]):
         results[batch] = {'min': float(np.min(data[batch, ...])),
@@ -43,8 +43,8 @@ def generate_batch(param):
 
 
 def generate_axes(param):
+    data = np.asarray(util.load_mrc(param['input']['path']), dtype=np.float64)
     for i in range(4):
-        data = util.load_mrc(param['input']['path'])
         key = 'axis{}'.format(i)
         output_shape = param[key]['output_shape']
         util.save_mrc(param[key]['output_min'], np.min(data, axis=i).reshape(output_shape))
@@ -65,16 +65,17 @@ def generate_complex(param):
     data += np.linspace(0, 3, data.size).reshape(data.shape)
     util.save_mrc(param['input_path'], data)
 
+    data_c = data.astype(np.complex128)
     results = dict()
-    sum = np.sum(data.astype(np.complex128))
+    sum = np.sum(data_c)
     results['sum_real'] = float(sum.real)
     results['sum_imag'] = float(sum.imag)
-    mean = np.mean(data.astype(np.complex128))
+    mean = np.mean(data_c)
     results['mean_real'] = float(mean.real)
     results['mean_imag'] = float(mean.imag)
-    results['norm'] = float(np.linalg.norm(data.astype(np.complex128)))
-    results['var'] = float(np.var(data.astype(np.complex128), ddof=1))
-    results['std'] = float(np.std(data.astype(np.complex128), ddof=1))
+    results['norm'] = float(np.linalg.norm(data_c))
+    results['var'] = float(np.var(data_c, ddof=1))
+    results['std'] = float(np.std(data_c, ddof=1))
     util.save_yaml(param['output_path'], results)
 
 
