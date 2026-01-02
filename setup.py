@@ -5,7 +5,6 @@ setup(
     version='0.1.0',
     url='https://github.com/thomasfrosio/noa-data.git',
     author='Thomas Frosio',
-    author_email='frosiot@gmail.com',
     description='Assets for the C++ noa library',
     packages=find_packages(),
     install_requires=[
