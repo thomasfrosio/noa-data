@@ -10,29 +10,98 @@ remap:
 
 resize:
   input:
-    - shape: &shape2D [ 1,1,8,8 ]
-      path: &input2D resize_2D_input00.mrc
-    - shape: &shape2D_1 [ 1,1,11,12 ]
-      path: &input2D_1 resize_2D_input01.mrc
+    - shape: &shape2D [1, 1, 8, 8]
+      path_h: &input2D_h resize_2D_input00_h.mrc
+      path_f: &input2D_f resize_2D_input00_f.mrc
+    - shape: &shape2D_1 [1, 1, 11, 12]
+      path_h: &input2D_1_h resize_2D_input01_h.mrc
+      path_f: &input2D_1_f resize_2D_input01_f.mrc
+    - shape: &shape3D [1, 8, 8, 8]
+      path_h: &input3D_h resize_3D_input00_h.mrc
+      path_f: &input3D_f resize_3D_input00_f.mrc
 
   tests:
     0:
       shape_input: *shape2D
-      shape_expected: [ 1,1,11,10 ]
-      input: *input2D
-      expected: resize_2D_00.mrc
+      shape_expected: [1, 1, 11, 10]
+      input: *input2D_h
+      expected: resize_2D_00_h.mrc
+      correct_nyquist: false
+      rfft: true
     1:
       shape_input: *shape2D
-      shape_expected: [ 1,1,10,12 ]
-      input: *input2D
-      expected: resize_2D_01.mrc
+      shape_expected: [1, 1, 10, 12]
+      input: *input2D_h
+      expected: resize_2D_01_h.mrc
+      correct_nyquist: false
+      rfft: true
     2:
       shape_input: *shape2D_1
-      shape_expected: [ 1,1,9,8 ]
-      input: *input2D_1
-      expected: resize_2D_02.mrc
+      shape_expected: [1, 1, 9, 8]
+      input: *input2D_1_h
+      expected: resize_2D_02_h.mrc
+      correct_nyquist: false
+      rfft: true
     3:
       shape_input: *shape2D_1
-      shape_expected: [ 1,1,8,9 ]
-      input: *input2D_1
-      expected: resize_2D_03.mrc
+      shape_expected: [1, 1, 8, 9]
+      input: *input2D_1_h
+      expected: resize_2D_03_h.mrc
+      correct_nyquist: false
+      rfft: true
+    4:
+      shape_input: *shape2D
+      shape_expected: [1, 1, 6, 6]
+      input: *input2D_h
+      expected: resize_2D_04_h.mrc
+      correct_nyquist: true
+      rfft: true
+    5:
+      shape_input: *shape3D
+      shape_expected: [1, 6, 6, 6]
+      input: *input3D_h
+      expected: resize_3D_00_h.mrc
+      correct_nyquist: true
+      rfft: true
+    6:
+      shape_input: *shape2D
+      shape_expected: [1, 1, 11, 10]
+      input: *input2D_f
+      expected: resize_2D_00_f.mrc
+      correct_nyquist: false
+      rfft: false
+    7:
+      shape_input: *shape2D
+      shape_expected: [1, 1, 10, 12]
+      input: *input2D_f
+      expected: resize_2D_01_f.mrc
+      correct_nyquist: false
+      rfft: false
+    8:
+      shape_input: *shape2D_1
+      shape_expected: [1, 1, 9, 8]
+      input: *input2D_1_f
+      expected: resize_2D_02_f.mrc
+      correct_nyquist: false
+      rfft: false
+    9:
+      shape_input: *shape2D_1
+      shape_expected: [1, 1, 8, 9]
+      input: *input2D_1_f
+      expected: resize_2D_03_f.mrc
+      correct_nyquist: false
+      rfft: false
+    10:
+      shape_input: *shape2D
+      shape_expected: [1, 1, 6, 6]
+      input: *input2D_f
+      expected: resize_2D_04_f.mrc
+      correct_nyquist: true
+      rfft: false
+    11:
+      shape_input: *shape3D
+      shape_expected: [1, 6, 6, 6]
+      input: *input3D_f
+      expected: resize_3D_00_f.mrc
+      correct_nyquist: true
+      rfft: false
