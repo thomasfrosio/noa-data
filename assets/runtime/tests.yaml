@@ -1,15 +1,15 @@
 reduce_to_stats:
   input:
-    shape: [ 10,64,64,64 ]
+    shape: [10, 64, 64, 64]
     path: tmp_stats_input.mrc
   all:
-    output_shape: [ 1,1,1,1 ]
+    output_shape: [1, 1, 1, 1]
     output_path: tmp_stats_output_all.yaml
   batch:
-    output_shape: [ 10,1,1,1 ]
+    output_shape: [10, 1, 1, 1]
     output_path: tmp_stats_output_batch.yaml
   axis0:
-    output_shape: [ 1,64,64,64 ]
+    output_shape: [1, 64, 64, 64]
     output_min: tmp_stats_output0_min.mrc
     output_max: tmp_stats_output0_max.mrc
     output_sum: tmp_stats_output0_sum.mrc
@@ -18,7 +18,7 @@ reduce_to_stats:
     output_var: tmp_stats_output0_var.mrc
     output_std: tmp_stats_output0_std.mrc
   axis1:
-    output_shape: [ 10,1,64,64 ]
+    output_shape: [10, 1, 64, 64]
     output_min: tmp_stats_output1_min.mrc
     output_max: tmp_stats_output1_max.mrc
     output_sum: tmp_stats_output1_sum.mrc
@@ -27,7 +27,7 @@ reduce_to_stats:
     output_var: tmp_stats_output1_var.mrc
     output_std: tmp_stats_output1_std.mrc
   axis2:
-    output_shape: [ 10,64,1,64 ]
+    output_shape: [10, 64, 1, 64]
     output_min: tmp_stats_output2_min.mrc
     output_max: tmp_stats_output2_max.mrc
     output_sum: tmp_stats_output2_sum.mrc
@@ -36,7 +36,7 @@ reduce_to_stats:
     output_var: tmp_stats_output2_var.mrc
     output_std: tmp_stats_output2_std.mrc
   axis3:
-    output_shape: [ 10,64,64,1 ]
+    output_shape: [10, 64, 64, 1]
     output_min: tmp_stats_output3_min.mrc
     output_max: tmp_stats_output3_max.mrc
     output_sum: tmp_stats_output3_sum.mrc
@@ -46,15 +46,15 @@ reduce_to_stats:
     output_std: tmp_stats_output3_std.mrc
 
 reduce_complex:
-  shape: [ 10,64,64,64 ]
+  shape: [10, 64, 64, 64]
   input_path: tmp_stats_input_complex.mrc
   output_path: tmp_stats_output_complex_all.yaml
 
 sort:
   input_filename_1d: &input_1d tmp_sort_input_1d.mrc
-  shape_1d: &shape_1d [ 1,1,2,4096 ] # 2D for mrcfile, but ignore second row
+  shape_1d: &shape_1d [1, 1, 2, 4096] # 2D for mrcfile, but ignore second row
   input_filename_4d: &input_4d tmp_sort_input_4d.mrc
-  shape_4d: &shape_4d [ 11,21,31,41 ]
+  shape_4d: &shape_4d [11, 21, 31, 41]
 
   tests:
     0:
@@ -103,58 +103,58 @@ resize: # the inputs are a range from 0 to N
   0:
     expected: resize_00.mrc
     is_centered: false
-    shape: [ 3,1,64,64 ]
-    left: [ 0,0,-5,11 ]
-    right: [ 0,0,0,6 ]
+    shape: [3, 1, 64, 64]
+    left: [0, 0, -5, 11]
+    right: [0, 0, 0, 6]
     border: BORDER_VALUE
     border_value: 5
   1:
     expected: resize_01.mrc
     is_centered: false
-    shape: [ 1,1,128,127 ]
-    left: [ 0,0,1,-20 ]
-    right: [ 0,0,1,1 ]
+    shape: [1, 1, 128, 127]
+    left: [0, 0, 1, -20]
+    right: [0, 0, 1, 1]
     border: BORDER_ZERO
     border_value: 5
   2:
     expected: resize_02.mrc
     is_centered: false
-    shape: [ 1,1,64,63 ]
-    left: [ 0,0,100,192 ]
-    right: [ 0,0,92,0 ]
+    shape: [1, 1, 64, 63]
+    left: [0, 0, 100, 192]
+    right: [0, 0, 92, 0]
     border: BORDER_PERIODIC
     border_value: 0
   3:
     expected: resize_03.mrc
     is_centered: false
-    shape: [ 2,1,128,127 ]
-    left: [ 0,0,100,-50 ]
-    right: [ 0,0,-100,-9 ]
+    shape: [2, 1, 128, 127]
+    left: [0, 0, 100, -50]
+    right: [0, 0, -100, -9]
     border: BORDER_CLAMP
     border_value: 0
   4:
     expected: resize_04.mrc
     is_centered: false
-    shape: [ 2,1,256,256 ]
-    left: [ 0,0,4,0 ]
-    right: [ 0,0,40,0 ]
+    shape: [2, 1, 256, 256]
+    left: [0, 0, 4, 0]
+    right: [0, 0, 40, 0]
     border: BORDER_MIRROR
     border_value: 0
   5:
     expected: resize_05.mrc
     is_centered: false
-    shape: [ 2,1,256,256 ]
-    left: [ 0,0,4,0 ]
-    right: [ 0,0,40,0 ]
+    shape: [2, 1, 256, 256]
+    left: [0, 0, 4, 0]
+    right: [0, 0, 40, 0]
     border: BORDER_REFLECT
     border_value: 0
   6:
     expected: resize_06.mrc
     is_centered: false
-    shape: [ 3,1,64,64 ]
-    left: [ 0,0,-5,11 ]
-    right: [ 0,0,0,6 ]
-    border: BORDER_NOTHING  # OOB elements are set to 2
+    shape: [3, 1, 64, 64]
+    left: [0, 0, -5, 11]
+    right: [0, 0, 0, 6]
+    border: BORDER_NOTHING # OOB elements are set to 2
     border_value: 0
 
   # -- 3D -- #
@@ -162,59 +162,59 @@ resize: # the inputs are a range from 0 to N
   7:
     expected: resize_10.mrc
     is_centered: false
-    shape: [ 1,64,64,64 ]
-    left: [ 0,-30,-5,11 ]
-    right: [ 0,4,0,6 ]
+    shape: [1, 64, 64, 64]
+    left: [0, -30, -5, 11]
+    right: [0, 4, 0, 6]
     border: BORDER_VALUE
     border_value: 1
   8:
     expected: resize_11.mrc
     is_centered: false
-    shape: [ 1,66,128,127 ]
-    left: [ 0,0,1,-20 ]
-    right: [ 0,0,1,1 ]
+    shape: [1, 66, 128, 127]
+    left: [0, 0, 1, -20]
+    right: [0, 0, 1, 1]
     border: BORDER_ZERO
     border_value: 5
   9:
     expected: resize_12.mrc
     is_centered: false
-    shape: [ 1,65,64,63 ]
-    left: [ 0,25,100,192 ]
-    right: [ 0,10,92,0 ]
+    shape: [1, 65, 64, 63]
+    left: [0, 25, 100, 192]
+    right: [0, 10, 92, 0]
     border: BORDER_PERIODIC
     border_value: 0
   10:
     expected: resize_13.mrc
     is_centered: false
-    shape: [ 1,1,128,127 ]
-    left: [ 0,4,128,-50 ]
-    right: [ 0,0,-128,-9 ]
+    shape: [1, 1, 128, 127]
+    left: [0, 4, 128, -50]
+    right: [0, 0, -128, -9]
     border: BORDER_CLAMP
     border_value: 0
   11:
     expected: resize_14.mrc
     is_centered: false
-    shape: [ 1,30,256,256 ]
-    left: [ 0,-10,4,0 ]
-    right: [ 0,-19,40,0 ]
+    shape: [1, 30, 256, 256]
+    left: [0, -10, 4, 0]
+    right: [0, -19, 40, 0]
     border: BORDER_MIRROR
     border_value: 0
     batches: 1
   12:
     expected: resize_15.mrc
     is_centered: false
-    shape: [ 1,30,256,256 ]
-    left: [ 0,-10,4,0 ]
-    right: [ 0,-19,40,0 ]
+    shape: [1, 30, 256, 256]
+    left: [0, -10, 4, 0]
+    right: [0, -19, 40, 0]
     border: BORDER_REFLECT
     border_value: 5
   13:
     expected: resize_16.mrc
     is_centered: false
-    shape: [ 1,1,128,127 ]
-    left: [ 0,4,100,-50 ]
-    right: [ 0,0,-100,-9 ]
-    border: BORDER_NOTHING  # OOB elements are set to 2
+    shape: [1, 1, 128, 127]
+    left: [0, 4, 100, -50]
+    right: [0, 0, -100, -9]
+    border: BORDER_NOTHING # OOB elements are set to 2
     border_value: 0
 
   # the input values are a range from 0 to N,
@@ -222,64 +222,64 @@ resize: # the inputs are a range from 0 to N
   14:
     expected: resize_centered_00.mrc
     is_centered: true
-    shape: [ 3,1,64,64 ]
-    o_shape: [ 3,1,59,81 ]
+    shape: [3, 1, 64, 64]
+    o_shape: [3, 1, 59, 81]
     border: BORDER_VALUE
     border_value: 5
   15:
     expected: resize_centered_01.mrc
     is_centered: true
-    shape: [ 1,64,64,64 ]
-    o_shape: [ 1,40,59,81 ]
+    shape: [1, 64, 64, 64]
+    o_shape: [1, 40, 59, 81]
     border: BORDER_VALUE
     border_value: 1
   16:
     expected: resize_centered_02.mrc
     is_centered: true
-    shape: [ 1,1,128,127 ]
-    o_shape: [ 1,1,130,108 ]
+    shape: [1, 1, 128, 127]
+    o_shape: [1, 1, 130, 108]
     border: BORDER_ZERO
     border_value: 5
   17:
     expected: resize_centered_03.mrc
     is_centered: true
-    shape: [ 1,30,128,127 ]
-    o_shape: [ 1,1,128,130 ]
+    shape: [1, 30, 128, 127]
+    o_shape: [1, 1, 128, 130]
     border: BORDER_ZERO
     border_value: 5
   18:
     expected: resize_centered_04.mrc
     is_centered: true
-    shape: [ 1,1,1,80 ]
-    o_shape: [ 1,40,80,80 ]
+    shape: [1, 1, 1, 80]
+    o_shape: [1, 40, 80, 80]
     border: BORDER_CLAMP
     border_value: 0
   19:
     expected: resize_centered_05.mrc
     is_centered: true
-    shape: [ 1,50,50,1 ]
-    o_shape: [ 1,5,31,20 ]
+    shape: [1, 50, 50, 1]
+    o_shape: [1, 5, 31, 20]
     border: BORDER_CLAMP
     border_value: 0
   20:
     expected: resize_centered_06.mrc
     is_centered: true
-    shape: [ 1,30,30,30 ]
-    o_shape: [ 1,90,90,90 ]
+    shape: [1, 30, 30, 30]
+    o_shape: [1, 90, 90, 90]
     border: BORDER_PERIODIC
     border_value: 0
   21:
     expected: resize_centered_07.mrc
     is_centered: true
-    shape: [ 1,32,128,64 ]
-    o_shape: [ 1,32,256,128 ]
+    shape: [1, 32, 128, 64]
+    o_shape: [1, 32, 256, 128]
     border: BORDER_MIRROR
     border_value: 0
   22:
     expected: resize_centered_08.mrc
     is_centered: true
-    shape: [ 1,32,128,64 ]
-    o_shape: [ 1,32,256,128 ]
+    shape: [1, 32, 128, 64]
+    o_shape: [1, 32, 256, 128]
     border: BORDER_REFLECT
     border_value: 0
 
@@ -287,14 +287,14 @@ subregions:
   # the input arrays are set with values from 0 to N, subregions are extracted,
   # the arrays are reset to value=4 and subregions are re-inserted.
   0:
-    shape: [ 1,1,513,512 ]
-    sub_shape: [ 5,1,63,62 ]
+    shape: [1, 1, 513, 512]
+    sub_shape: [1, 1, 63, 62]
     sub_origins:
-      - [ 0,0,0,-1 ]
-      - [ 0,0,469,469 ]
-      - [ 0,0,1,97 ]
-      - [ 0,0,420,319 ]
-      - [ 0,0,-31,481 ]
+      - [0, 0, 0, -1]
+      - [0, 0, 469, 469]
+      - [0, 0, 1, 97]
+      - [0, 0, 420, 319]
+      - [0, 0, -31, 481]
     expected_extract:
       - extract_00.mrc
       - extract_01.mrc
@@ -306,27 +306,27 @@ subregions:
     border: BORDER_VALUE
     border_value: 3.5
   1:
-    shape: [ 1,50,255,256 ]
-    sub_shape: [ 3,1,60,55 ]
+    shape: [1, 50, 255, 256]
+    sub_shape: [1, 1, 60, 55]
     sub_origins:
-      - [ 0,0,-30,-27 ]
-      - [ 0,24,2,101 ]
-      - [ 0,0,225,-27 ]
+      - [0, 0, -30, -27]
+      - [0, 24, 2, 101]
+      - [0, 0, 225, -27]
     expected_extract:
       - extract_10.mrc
       - extract_11.mrc
       - extract_12.mrc
     expected_insert:
       - insert_10.mrc
-    border: BORDER_NOTHING  # OOB elements are set to 2
+    border: BORDER_NOTHING # OOB elements are set to 2
     border_value: 3
   2:
-    shape: [ 1,126,127,128 ]
-    sub_shape: [ 3,43,42,40 ]
+    shape: [1, 126, 127, 128]
+    sub_shape: [1, 43, 42, 40]
     sub_origins:
-      - [ 0,-1,10,10 ]
-      - [ 0,104,105,107 ]
-      - [ 0,99,96,44 ]
+      - [0, -1, 10, 10]
+      - [0, 104, 105, 107]
+      - [0, 99, 96, 44]
     expected_extract:
       - extract_20.mrc
       - extract_21.mrc
@@ -339,66 +339,66 @@ subregions:
 transpose:
   inputs:
     # values are range from 0 to N. See DataTranspose.py.
-    - shape: [ 1,1,120,125 ]
+    - shape: [1, 1, 120, 125]
       path: &input2D_0 tmp_transpose_input2D_00.mrc
-    - shape: [ 1,1,64,64 ]
+    - shape: [1, 1, 64, 64]
       path: &input2D_1 tmp_transpose_input2D_01.mrc
-    - shape: [ 1,121,120,125 ]
+    - shape: [1, 121, 120, 125]
       path: &input3D_0 tmp_transpose_input3D_00.mrc
-    - shape: [ 1,64,64,65 ]
+    - shape: [1, 64, 64, 65]
       path: &input3D_1 tmp_transpose_input3D_01.mrc
-    - shape: [ 1,64,65,65 ]
+    - shape: [1, 64, 65, 65]
       path: &input3D_2 tmp_transpose_input3D_02.mrc
-    - shape: [ 1,64,66,64 ]
+    - shape: [1, 64, 66, 64]
       path: &input3D_3 tmp_transpose_input3D_03.mrc
   tests:
     0:
       input: *input2D_0
       expected: tmp_transpose_00.mrc
-      permutation: [ 0,1,3,2 ]
+      permutation: [0, 1, 3, 2]
       inplace: false
     1:
       input: *input3D_0
       expected: tmp_transpose_01.mrc
-      permutation: [ 0,2,1,3 ]
+      permutation: [0, 2, 1, 3]
       inplace: false
     2:
       input: *input3D_0
       expected: tmp_transpose_02.mrc
-      permutation: [ 0,1,3,2 ]
+      permutation: [0, 1, 3, 2]
       inplace: false
     3:
       input: *input3D_0
       expected: tmp_transpose_03.mrc
-      permutation: [ 0,3,1,2 ]
+      permutation: [0, 3, 1, 2]
       inplace: false
     4:
       input: *input3D_0
       expected: tmp_transpose_04.mrc
-      permutation: [ 0,2,3,1 ]
+      permutation: [0, 2, 3, 1]
       inplace: false
     5:
       input: *input3D_0
       expected: tmp_transpose_05.mrc
-      permutation: [ 0,3,2,1 ]
+      permutation: [0, 3, 2, 1]
       inplace: false
     6:
       input: *input2D_1
       expected: tmp_transpose_06.mrc
-      permutation: [ 0,1,3,2 ]
+      permutation: [0, 1, 3, 2]
       inplace: true
     7:
       input: *input3D_1
       expected: tmp_transpose_07.mrc
-      permutation: [ 0,2,1,3 ]
+      permutation: [0, 2, 1, 3]
       inplace: true
     8:
       input: *input3D_2
       expected: tmp_transpose_08.mrc
-      permutation: [ 0,1,3,2 ]
+      permutation: [0, 1, 3, 2]
       inplace: true
     9:
       input: *input3D_3
       expected: tmp_transpose_09.mrc
-      permutation: [ 0,3,2,1 ]
+      permutation: [0, 3, 2, 1]
       inplace: true
